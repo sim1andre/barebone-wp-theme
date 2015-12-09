@@ -1,0 +1,12 @@
+@import
+'base/settings',
+'base/functions',
+'base/mixins',
+'base/placeholders',
+'base/native-theme-settings';
+
+body {
+  font-family: $font-family;
+  padding: 0;
+  margin: 0;
+}
