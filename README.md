@@ -11,7 +11,8 @@ This is a barebone wp theme with features like gulp, browser-sync,
 ####Use foundation in theme
 1. Make sure you have installed bower.
 2. Deside if you want sass or css version
-   Run `gulp foundation-sass` in your terminal if you want to use sass version.
-   Run `gulp foundation-css` in your terminal if you want to use css version.
+    * Run `gulp foundation-sass` in your terminal if you want to use sass version.
+    * Run `gulp foundation-css` in your terminal if you want to use css version.
 
-3. If you also want to use foundation js Run `gulp foundation-js`
+3. If you also want to use foundation js in this theme
+    * Run `gulp foundation-js`
