@@ -18,13 +18,19 @@ Want to use Browsersync? See "How to set up Broewsersync" in this doc
 <br/>
 <br/>
 
-#Documentation
+#Theme documentation
 
-[#modes]Modes
+[Modes](#modes)
+[How to set up Browsersync](#how-to-set-up-browsersync)
+[Features](#gulp-features)
 
+---
 
+<br/>
+<br/>
+<br/>
 
-##Modes[]
+##Modes
 
 <br/>
 
