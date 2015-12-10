@@ -8,27 +8,28 @@ This is a barebone wp theme with Gulp.
 
 #Theme documentation
 
-1. [Get started](#get-started)
+1. [Getting started](#getting-started)
 2. [Envirement modes](#modes)
 3. [About Gulp features](#about-gulp-features)
 4. [Browsersync](#browsersync)
 5. [Foundation](#foundation)
 
---
 
 <br/>
 <br/>
 <br/>
 
 
-##Get started
+##Getting started
 
 <br/>
 
-1. `git clone https://github.com/sim1andre/barebone-wp-theme.git`
-2. `npm install`
-3. `bower install`
-4. `gulp`
+1. Navigate to wp-content/themes folder inside terminal
+2. Run command bellow to clone repository into themes folder
+  * `git clone https://github.com/sim1andre/barebone-wp-theme.git`
+2. Run this command to install all dependencies `npm install`
+3. Run this command to install libraries `bower install`
+4. Start gulp by running this inside terminal `gulp`
 
 
 
@@ -40,9 +41,9 @@ This is a barebone wp theme with Gulp.
 
 <br/>
 
-**Development**
+**Development(Default)**
 
-This is the default mode that this theme uses. In this mode the css and js
+This is the default mode the theme uses. In this mode the css and js
 is not getting minified.
 
 **Production**
@@ -61,6 +62,8 @@ to use files with .min suffix.
   2. Go down to gulpSettings and find "development".
 
   `development:true/false;`
+
+  3. If you are already are running gulp. Restart it.
 
 <br/>
 <br/>
