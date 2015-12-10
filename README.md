@@ -57,6 +57,8 @@ This is the mode that you will use when you are in a production envirement.
 In this mode the css and js are beeing minified and the regular css and js is
 removed from public folder.
 
+<br/>
+
 **Change modes**
 
   1. Find and open gulpfile.js
@@ -66,10 +68,9 @@ removed from public folder.
 
   3. If you are already are running gulp. Restart it to get changes.
 
-  <sub>
-  **Remember! When you are going from dev to production you will need to change the functions.php
-  to use files with .min suffix.**
-  </sub>
+**Remember! When you are going from dev to production you will need to change the functions.php
+to use files with .min suffix.**
+
 
 <br/>
 <br/>
