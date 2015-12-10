@@ -10,6 +10,7 @@ This is a barebone wp theme with Gulp.
 4. `gulp`
 
 Want to use Browsersync? See "How to set up Broewsersync" in this doc
+
 --
 --
 
@@ -61,7 +62,10 @@ to use files with .min suffix.
 
     * domain: 'localhost/{"themename"}'
 
-
+<br/>
+<br/>
+<br/>
+<br/>
 
 
 ##Gulp features
@@ -89,8 +93,10 @@ to use files with .min suffix.
   * Reload browsers when changes are detected in php and js files.
   * Syncing scroll, clicks etc.
 
-
-
+<br/>
+<br/>
+<br/>
+<br/>
 
 ##Use foundation
 
@@ -99,7 +105,7 @@ to use files with .min suffix.
     * Run `gulp foundation-sass` in your terminal if you want to use sass version.
         * To import sass version go to app.scss and insert this code
 
-          ```
+          ```SASS
           @import
           '../vendor/foundation/foundation',
           '../vendor/foundation/normalize';
