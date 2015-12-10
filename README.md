@@ -12,17 +12,15 @@ This is a barebone wp theme with Gulp.
 
 ####Gulp features
 
-* Gulp
+  **SASS task**
+  * Compiling sass into regular css.
+  * Adding browser prefixes.
+  * Minifying css and adding .min suffix to the filename.
 
-    **SASS task**
-    * Compiling sass into regular css.
-    * Adding browser prefixes.
-    * Minifying css and adding .min suffix to the filename.
-
-    **Javascript task**
-    * Bundle up all your js files into one file.
-    * Convert ES6 into ES5.
-    * Minifiying js and adding a .min suffix to the filename.
+  **Javascript task**
+  * Bundle up all your js files into one file.
+  * Convert ES6 into ES5.
+  * Minifiying js and adding a .min suffix to the filename.
 
 
 
