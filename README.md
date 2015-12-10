@@ -10,8 +10,8 @@ This is a barebone wp theme with Gulp.
 4. `gulp`
 
 Want to use Browsersync? See "How to set up Broewsersync" in this doc
----
----
+--
+--
 
 ##Modes
 
