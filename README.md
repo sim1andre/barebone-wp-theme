@@ -20,7 +20,7 @@ Want to use Browsersync? See "How to set up Broewsersync" in this doc
 
 #Theme documentation
 
-```````
+
 1. [Envirement modes](#modes)
   1.1. [About development mode](#)
   1.2. [About production mode](#)
@@ -29,7 +29,6 @@ Want to use Browsersync? See "How to set up Broewsersync" in this doc
 2. [Features](#gulp-features)
 3. [How to set up Browsersync](#how-to-set-up-browsersync)
 
-```````
 
 --
 
