@@ -42,7 +42,7 @@ This is a barebone wp theme with Gulp.
 <br/>
 <br/>
 
-##Modes
+##Envirement modes
 
 <br/>
 
@@ -67,6 +67,8 @@ removed from public folder.
   `development:true/false;`
 
   3. If you are already are running gulp. Restart it to get changes.
+
+<br/>
 
 **Remember! When you are going from dev to production you will need to change the functions.php
 to use files with .min suffix.**
