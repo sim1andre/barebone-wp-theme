@@ -2,10 +2,12 @@ const $ = require('jquery');
 
 const $d = $(document);
 const $w = $(window);
+const dev = true;
 
 $d.ready(function() {
-  console.log('test');
 
-
+  if(dev) {
+    console.log('jQuery is running');
+  }
 
 });

@@ -7,6 +7,7 @@
 
 var gulpSettings = {
 
+    development: true,
 
   //Node and bower----------------------------
 
@@ -22,7 +23,7 @@ var gulpSettings = {
 
       RunBrowserSync: true,
       browsers: ['chrome'],
-      domain:'localhost/testtheme/', //If localhost use 'localhost/"yourAppFolder"'
+      domain:'localhost/testtheme/', //'localhost/"yourAppFolder"'
       port:4000,
       syncFeatures: {
         clicks: true,
@@ -37,14 +38,11 @@ var gulpSettings = {
 
   //Sass and CSS-----------------------------
 
-      //Path to sass files
       sassPath: './source/sass/**/*.scss',
-      //Path to CSS
       cssPath: './public/css/',
 
   //Javascript------------------------------
 
-      jsCompress: false,
       srcJsPath: './source/js/app.js',
       publicJsPath: './public/js/',
       publicJsCompPath: './public/js/',
@@ -71,7 +69,9 @@ var cssmin = require('gulp-cssmin');
 var rename = require('gulp-rename');
 var sourcemap = require('gulp-sourcemaps');
 var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 var babelify = require('babelify');
+var streamify = require('gulp-streamify');
 var uglify = require('gulp-uglify');
 var notify = require('gulp-notify');
 var fs = require('fs');
@@ -92,9 +92,8 @@ gulp.task('sass', function() {
       browsers: ['last 2 versions','> 5%'],
       cascade: false
   }))
-  .pipe(gulp.dest(gulpSettings.cssPath))
-  .pipe(cssmin())
-  .pipe(rename({ suffix:".min" }))
+  .pipe(gulpif( !gulpSettings.development , cssmin()))
+  .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
   .pipe(gulp.dest(gulpSettings.cssPath))
   .pipe(browserSync.stream())
   .pipe(notify({ message: 'Injected css into browser(s) (<%= file.relative %>)'}));
@@ -106,21 +105,14 @@ gulp.task('sass', function() {
 //------------------------------------------------------------------------------
 
 gulp.task('js', function (){
-  browserify({ debug: true })
+  return browserify({entries: gulpSettings.srcJsPath, debug: true })
     .transform(babelify)
-    .require( gulpSettings.srcJsPath , { entry: true })
     .bundle()
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-    .pipe( fs.createWriteStream( gulpSettings.publicJsPath + 'app.js' ));
-});
-
-gulp.task('js-uglify', function() {
-  return gulp.src( gulpSettings.publicJsPath + 'app.js' )
-  .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-  .pipe(uglify())
-  .pipe(rename({ suffix:'.min' }))
-  .pipe(gulp.dest( gulpSettings.publicJsPath ))
-  .pipe(notify({ message: 'Completed javascript minifying <%= file.relative %>'}));
+    .pipe(source('app.js'))
+    .pipe(gulpif( !gulpSettings.development, streamify(uglify())))
+    .pipe(gulpif( !gulpSettings.development, rename({ suffix:'.min' })))
+    .pipe(gulp.dest( gulpSettings.publicJsPath ));
 });
 
 
@@ -187,7 +179,6 @@ gulp.task('foundation-js', function () {
 gulp.task('watch', function() {
   gulp.watch( gulpSettings.sassPath , ['sass']).on('change', browserSync.reload);
   gulp.watch( gulpSettings.srcJsPath , ['js']).on('change', browserSync.reload);
-  gulp.watch( gulpSettings.publicJsPath + 'app.js' , ['js-uglify']).on('change', browserSync.reload);
   gulp.watch( gulpSettings.phpPath).on('change', browserSync.reload);
   gulp.watch( gulpSettings.publicImagePath, ['image-opt']).on('change', browserSync.reload);
 });
