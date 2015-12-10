@@ -2,7 +2,26 @@
 
 This is a barebone wp theme with Gulp.
 
-##Install
+<br/>
+<br/>
+<br/>
+
+#Theme documentation
+
+1. [Get started](#get-started)
+2. [Envirement modes](#modes)
+3. [About Gulp features](#about-gulp-features)
+4. [Browsersync](#browsersync)
+5. [Foundation](#foundation)
+
+--
+
+<br/>
+<br/>
+<br/>
+
+
+##Get started
 
 <br/>
 
@@ -11,26 +30,7 @@ This is a barebone wp theme with Gulp.
 3. `bower install`
 4. `gulp`
 
-Want to use Browsersync? See "How to set up Broewsersync" in this doc
 
-
-<br/>
-<br/>
-<br/>
-
-#Theme documentation
-
-
-1. [Envirement modes](#modes)
-  * [About development mode](#)
-  * [About production mode](#)
-  * [How to change mode](#)
-
-2. [Features](#gulp-features)
-3. [How to set up Browsersync](#how-to-set-up-browsersync)
-
-
---
 
 <br/>
 <br/>
@@ -66,34 +66,10 @@ to use files with .min suffix.
 <br/>
 <br/>
 
-##How to set up Browsersync
 
-  1. Go into gulpfile.js
-  2. Find gulpSettings
-  3. Go down to browsersync options
-  4. Change this opions
-
-    * runBrowserSync: true
-    * browsers: ['Add browsers you want to test in']
-
-      * Browsers to choose from:
-
-        ````
-        'chrome' This is default
-        'explorer'
-        'firefox'
-        'opera'
-        'safari'
-        ````
-
-    * domain: 'localhost/{"themename"}'
+##About Gulp features
 
 <br/>
-<br/>
-<br/>
-
-
-##Gulp features
 
 **SASS task**
 
@@ -122,7 +98,33 @@ to use files with .min suffix.
 <br/>
 <br/>
 
-##Use foundation
+##Browsersync
+
+  1. Go into gulpfile.js
+  2. Find gulpSettings
+  3. Go down to browsersync options
+  4. Change this opions
+
+    * runBrowserSync: true
+    * browsers: ['Add browsers you want to test in']
+
+      * Browsers to choose from:
+
+        ````
+        'chrome' This is default
+        'explorer'
+        'firefox'
+        'opera'
+        'safari'
+        ````
+
+    * domain: 'localhost/{"themename"}'
+
+<br/>
+<br/>
+<br/>
+
+##Foundation
 
 1. Make sure you have installed bower.
 2. Deside if you want sass or css version
