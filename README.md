@@ -10,19 +10,49 @@ This is a barebone wp theme with Gulp.
 4. `gulp`
 
 
+####Modes
+
+**Development**
+
+This is the default mode that this theme uses. In this mode the css and js
+is not getting minified.
+
+**Production**
+
+This is the mode that you will use when you are in a production envirement.
+In this mode the css and js are beeing minified and the regular css and js is
+removed from public folder.
+
+**Remember!**
+When you are going from dev to production you will need to change the functions.php
+to use files with .min suffix.
+
+**Change modes**
+
+  1. Find and open gulpfile.js
+  2. Go down to gulpSettings and find "development".
+
+  `development:true/false;`
+
+
 ####Gulp features
 
   **SASS task**
+
   * Compiling sass into regular css.
   * Adding browser prefixes.
   * Minifying css and adding .min suffix to the filename.
 
   **Javascript task**
+
   * Bundle up all your js files into one file.
   * Convert ES6 into ES5.
   * Minifiying js and adding a .min suffix to the filename.
 
+  **Image task**
 
+  * Optimize images inside source image folder
+  *
 
 ####Use foundation in this theme
 1. Make sure you have installed bower.

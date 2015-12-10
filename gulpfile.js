@@ -62,6 +62,8 @@ var gulp  = require('gulp');
 var browserSync = require('browser-sync');
 var plumber = require('gulp-plumber');
 var gulpif = require('gulp-if');
+var rimraf = require('gulp-rimraf');
+var newer = require('gulp-newer');
 var scsslint = require('gulp-scss-lint');
 var sass  = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
@@ -75,9 +77,7 @@ var streamify = require('gulp-streamify');
 var uglify = require('gulp-uglify');
 var notify = require('gulp-notify');
 var fs = require('fs');
-var imagemin = require('imagemin');
-var imageminPngquant = require('imagemin-pngquant');
-var imageminJpegtran = require('imagemin-jpegtran');
+var imagemin = require('gulp-imagemin');
 
 
 //------------------------------------------------------------------------------
@@ -139,14 +139,14 @@ gulp.task('browser-sync', function() {
 //IMAGES
 //------------------------------------------------------------------------------
 
-gulp.task('image-opt', function() {
+gulp.task('images', function() {
   return gulp.src( gulpSettings.srcImagePath )
-  .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-  .pipe(imageminPngquant({ quality: '60-80', speed: 4})())
-  .pipe(imageminJpegtran({ progressive: true})())
-  .pipe(gulp.dest( gulpSettings.publicImagePath ));
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+    .pipe(newer( gulpSettings.publicImagePath ))
+    .pipe(rimraf({ force: true }))
+    .pipe(imagemin({ optimizationLevel: 7, progressive: true, interlaced: true }))
+    .pipe(gulp.dest( gulpSettings.publicImagePath ))
 });
-
 
 //------------------------------------------------------------------------------
 //IMPORT FOUNDATION TASKS
@@ -180,7 +180,7 @@ gulp.task('watch', function() {
   gulp.watch( gulpSettings.sassPath , ['sass']).on('change', browserSync.reload);
   gulp.watch( gulpSettings.srcJsPath , ['js']).on('change', browserSync.reload);
   gulp.watch( gulpSettings.phpPath).on('change', browserSync.reload);
-  gulp.watch( gulpSettings.publicImagePath, ['image-opt']).on('change', browserSync.reload);
+  gulp.watch( gulpSettings.publicImagePath, ['images']).on('change', browserSync.reload);
 });
 
 gulp.task('default', gulpif(  gulpSettings.RunBrowserSync,
