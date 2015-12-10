@@ -1,0 +1,23 @@
+{
+  "name": "testsite",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Sim1andre <simen@webfordeg.net>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/sim1andre/barebone-wp-theme",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation": "~5.5.3",
+    "jquery": "~2.1.4"
+  }
+}
