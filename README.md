@@ -66,9 +66,9 @@ removed from public folder.
 
   3. If you are already are running gulp. Restart it to get changes.
 
-  <sub>
-    When you are going from dev to production you will need to change the functions.php
-    to use files with .min suffix.
+  <sub color="red">
+  When you are going from dev to production you will need to change the functions.php
+  to use files with .min suffix.
   </sub>
 
 <br/>
