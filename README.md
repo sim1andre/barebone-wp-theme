@@ -4,6 +4,8 @@ This is a barebone wp theme with Gulp.
 
 ##Install
 
+<br/>
+
 1. `git clone https://github.com/sim1andre/barebone-wp-theme.git`
 2. `npm install`
 3. `bower install`
@@ -15,9 +17,16 @@ Want to use Browsersync? See "How to set up Broewsersync" in this doc
 <br/>
 <br/>
 <br/>
-<br/>
 
-##Modes
+#Documentation
+
+[#modes]Modes
+
+
+
+##Modes[]
+
+<br/>
 
 **Development**
 
@@ -41,10 +50,9 @@ to use files with .min suffix.
 
   `development:true/false;`
 
-  <br/>
-  <br/>
-  <br/>
-  <br/>
+<br/>
+<br/>
+<br/>
 
 ##How to set up Browsersync
 
@@ -68,7 +76,6 @@ to use files with .min suffix.
 
     * domain: 'localhost/{"themename"}'
 
-<br/>
 <br/>
 <br/>
 <br/>
@@ -99,7 +106,6 @@ to use files with .min suffix.
   * Reload browsers when changes are detected in php and js files.
   * Syncing scroll, clicks etc.
 
-<br/>
 <br/>
 <br/>
 <br/>
