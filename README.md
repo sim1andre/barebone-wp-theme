@@ -10,6 +10,8 @@ This is a barebone wp theme with Gulp.
 4. `gulp`
 
 
+
+
 ###Modes
 
 **Development**
@@ -80,3 +82,25 @@ to use files with .min suffix.
 
 4. If you also want to use foundation js in this theme
     * Run `gulp foundation-js`
+
+##Set up Browsersync
+
+1. Go into gulpfile.js
+2. Find gulpSettings
+3. Go down to browsersync options
+4. Change this opions
+
+  * browsers: ['Add browsers you want to test in']
+
+    * Browsers:
+
+      ````
+      Default 'chrome'
+      'explorer'
+      'firefox'
+      'opera'
+      'safari'
+      ````
+
+
+  * domain: 'localhost/{"themename"}'
