@@ -8,9 +8,11 @@ This is a barebone wp theme with Gulp.
 
 #Theme documentation
 
+<br/>
+
 1. [Getting started](#getting-started)
-2. [Envirement modes](#modes)
-3. [About Gulp features](#about-gulp-features)
+2. [Environment](#modes)
+3. [Gulp features](#about-gulp-features)
 4. [Browsersync](#browsersync)
 5. [Cleanup](#cleanup)
 5. [Foundation](#foundation)
@@ -43,7 +45,7 @@ This is a barebone wp theme with Gulp.
 <br/>
 <br/>
 
-##Envirement modes
+##Environment modes
 
 <br/>
 
