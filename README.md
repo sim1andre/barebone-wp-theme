@@ -4,12 +4,13 @@ This is a barebone wp theme with Gulp.
 
 
 ##Install
+
 1. `git clone https://github.com/sim1andre/barebone-wp-theme.git`
 2. `npm install`
 3. `bower install`
 4. `gulp`
 
-
+Want to use Browsersync? See "How to set up Broewsersync" in this doc
 
 
 ##Modes
@@ -38,13 +39,14 @@ to use files with .min suffix.
 
 
 
-##Set up Browsersync
+##How to set up Browsersync
 
   1. Go into gulpfile.js
   2. Find gulpSettings
   3. Go down to browsersync options
   4. Change this opions
 
+    * runBrowserSync: true
     * browsers: ['Add browsers you want to test in']
 
       * Browsers to choose from:
@@ -56,7 +58,6 @@ to use files with .min suffix.
         'opera'
         'safari'
         ````
-
 
     * domain: 'localhost/{"themename"}'
 
