@@ -22,7 +22,7 @@ var gulpSettings = {
 
       RunBrowserSync: true,
       browsers: ['chrome'],
-      domain:'localhost/testtheme/', //'localhost/"yourAppFolder"'
+      domain:'localhost/"yourthemename"/', //'localhost/"yourAppFolder"'
       port:4000,
       syncFeatures: {
         clicks: true,

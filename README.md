@@ -49,14 +49,14 @@ This is a barebone wp theme with Gulp.
 
 **Development(Default)**
 
-*This is the default mode the theme uses. In this mode the css and js
-is not getting minified.*
+This is the default mode the theme uses. In this mode the css and js
+is not getting minified.
 
 **Production**
 
-*This is the mode that you will use when you are in a production envirement.
+This is the mode that you will use when you are in a production envirement.
 In this mode the css and js are beeing minified and the regular css and js is
-removed from public folder.*
+removed from public folder.
 
 <br/>
 
@@ -121,32 +121,35 @@ to use files with .min suffix.**
 
 ##Browsersync
 
+**Set domain to serve files from**
+
+  1. Open gulpfile.js
+  2. Find gulpSettings
+  3. Go to browsersync option `domain`
+  4. Set `"yourthemename"` to your theme folder name.
+
+**Open more browsers automatically**
+
+  1. Add more browsernames to `browsers: ['chrome']`
+
+    * Browsers to choose from:
+
+      ````
+      'chrome'    //Google Chrome
+      'explorer'  //Internet Explorer
+      'firefox'   //Firefox
+      'opera'     //Opera
+      'safari'    //Apple safari
+      ````
+
 **Start Browsersync**
 
   1. Open gulpfile.js
   2. Find gulpSettings
   3. Go to browsersync options
   4. Set `runBrowserSync` to `true`
-  5. If you already are running gulp...  
-  Restart to get changes.
+  5. If you already are running gulp, restart to get changes.
 
-**Open more browsers automatically**
-
-  1.
-
-
-browsers: ['Add browsers you want to test in']
-* Browsers to choose from:
-
-  ````
-  'chrome'    //Google Chrome
-  'explorer'  //Internet Explorer
-  'firefox'   //Firefox
-  'opera'     //Opera
-  'safari'    //Apple safari
-  ````
-
-    * domain: 'localhost/{"themename"}'
 
 <br/>
 <br/>
