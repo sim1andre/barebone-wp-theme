@@ -22,9 +22,9 @@ Want to use Browsersync? See "How to set up Broewsersync" in this doc
 
 
 1. [Envirement modes](#modes)
-   ..* [About development mode](#)
-   ..* [About production mode](#)
-   ..* [How to change mode](#)
+  * [About development mode](#)
+  * [About production mode](#)
+  * [How to change mode](#)
 
 2. [Features](#gulp-features)
 3. [How to set up Browsersync](#how-to-set-up-browsersync)
