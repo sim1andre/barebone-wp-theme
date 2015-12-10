@@ -26,7 +26,7 @@ This is a barebone wp theme with Gulp.
 
 1. Navigate to wp-content/themes folder inside terminal.
 2. Run command below to clone repository into themes folder.
-  * `git clone https://github.com/sim1andre/barebone-wp-theme.git`
+  * `git clone https://github.com/sim1andre/barebone-wp-theme.git "YOURTHEMENAME"`
 
 2. Run this command to install all node dependencies
   * `npm install`
