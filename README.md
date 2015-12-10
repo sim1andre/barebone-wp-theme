@@ -71,7 +71,8 @@ removed from public folder.
 
 <br/>
 
-**Remember! When you are going from development to production you will need to change the functions.php
+###Remember!
+**When you are going from development to production you will need to change the functions.php
 to use files with .min suffix.**
 
 
@@ -121,12 +122,16 @@ to use files with .min suffix.**
 
 ##Browsersync
 
-**Set domain to serve files from**
+<br/>
+
+**Set Browsersync to serve files from domain**
 
   1. Open gulpfile.js
   2. Find gulpSettings
   3. Go to browsersync option `domain`
   4. Set `"yourthemename"` to your theme folder name.
+
+<br/>
 
 **Open more browsers automatically**
 
@@ -141,6 +146,8 @@ to use files with .min suffix.**
       'opera'     //Opera
       'safari'    //Apple safari
       ````
+
+<br/>
 
 **Start Browsersync**
 
