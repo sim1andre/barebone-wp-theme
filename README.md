@@ -57,10 +57,6 @@ This is the mode that you will use when you are in a production envirement.
 In this mode the css and js are beeing minified and the regular css and js is
 removed from public folder.
 
-**Remember!**
-When you are going from dev to production you will need to change the functions.php
-to use files with .min suffix.
-
 **Change modes**
 
   1. Find and open gulpfile.js
@@ -68,7 +64,12 @@ to use files with .min suffix.
 
   `development:true/false;`
 
-  3. If you are already are running gulp. Restart it.
+  3. If you are already are running gulp. Restart it to get changes.
+
+  <sub>
+    When you are going from dev to production you will need to change the functions.php
+    to use files with .min suffix.
+  </sub>
 
 <br/>
 <br/>
@@ -101,6 +102,11 @@ to use files with .min suffix.
   * Injecting changes in css into browser(s).
   * Reload browsers when changes are detected in php and js files.
   * Syncing scroll, clicks etc.
+
+**Deployment task**
+
+  * Deploy theme to remote server through ftp or sftp.
+  *
 
 <br/>
 <br/>
