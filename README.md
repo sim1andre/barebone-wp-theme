@@ -58,7 +58,7 @@ to use files with .min suffix.
 **BrowserSync task**
 
   * Injecting changes in css into browser(s).
-  * Reload browsers when changes are detected php and js files.
+  * Reload browsers when changes are detected in php and js files.
   * Syncing scroll, clicks etc.
 
 
