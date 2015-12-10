@@ -49,14 +49,14 @@ This is a barebone wp theme with Gulp.
 
 **Development(Default)**
 
-This is the default mode the theme uses. In this mode the css and js
-is not getting minified.
+*This is the default mode the theme uses. In this mode the css and js
+is not getting minified.*
 
 **Production**
 
-This is the mode that you will use when you are in a production envirement.
+*This is the mode that you will use when you are in a production envirement.
 In this mode the css and js are beeing minified and the regular css and js is
-removed from public folder.
+removed from public folder.*
 
 <br/>
 
@@ -71,7 +71,7 @@ removed from public folder.
 
 <br/>
 
-**Remember! When you are going from dev to production you will need to change the functions.php
+**Remember! When you are going from development to production you will need to change the functions.php
 to use files with .min suffix.**
 
 
@@ -121,21 +121,30 @@ to use files with .min suffix.**
 
 ##Browsersync
 
-1. Go into gulpfile.js
-2. Find gulpSettings
-3. Go down to browsersync options
-4. Change this opions
-  * runBrowserSync: true
-  * browsers: ['Add browsers you want to test in']
-  * Browsers to choose from:
+**Start Browsersync**
 
-        ````
-        'chrome' This is default
-        'explorer'
-        'firefox'
-        'opera'
-        'safari'
-        ````
+  1. Open gulpfile.js
+  2. Find gulpSettings
+  3. Go to browsersync options
+  4. Set `runBrowserSync` to `true`
+  5. If you already are running gulp...  
+  Restart to get changes.
+
+**Open more browsers automatically**
+
+  1.
+
+
+browsers: ['Add browsers you want to test in']
+* Browsers to choose from:
+
+  ````
+  'chrome'    //Google Chrome
+  'explorer'  //Internet Explorer
+  'firefox'   //Firefox
+  'opera'     //Opera
+  'safari'    //Apple safari
+  ````
 
     * domain: 'localhost/{"themename"}'
 
