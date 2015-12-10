@@ -24,13 +24,18 @@ This is a barebone wp theme with Gulp.
 
 <br/>
 
-1. Navigate to wp-content/themes folder inside terminal
-2. Run command bellow to clone repository into themes folder
+1. Navigate to wp-content/themes folder inside terminal.
+2. Run command below to clone repository into themes folder.
   * `git clone https://github.com/sim1andre/barebone-wp-theme.git`
-2. Run this command to install all dependencies `npm install`
-3. Run this command to install libraries `bower install`
-4. Start gulp by running this inside terminal `gulp`
 
+2. Run this command to install all node dependencies
+  * `npm install`
+
+3. Run this command to install bower libraries.
+  * `bower install`
+
+4. Start gulp by running.
+  * `gulp`
 
 
 <br/>
