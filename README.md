@@ -20,7 +20,6 @@ This is a barebone wp theme with Gulp.
 
 <br/>
 <br/>
-<br/>
 
 
 ##Getting started
@@ -41,7 +40,6 @@ This is a barebone wp theme with Gulp.
   * `gulp`
 
 
-<br/>
 <br/>
 <br/>
 
@@ -78,7 +76,6 @@ removed from public folder.
 to use files with .min suffix.**
 
 
-<br/>
 <br/>
 <br/>
 
@@ -120,7 +117,6 @@ to use files with .min suffix.**
 
 <br/>
 <br/>
-<br/>
 
 ##Browsersync
 
@@ -160,7 +156,6 @@ to use files with .min suffix.**
   5. If you already are running gulp, restart to get changes.
 
 
-<br/>
 <br/>
 <br/>
 
