@@ -21,6 +21,7 @@ This is a barebone wp theme with many features.
           ```
 
     * Run `gulp foundation-css` in your terminal if you want to use css version.
+       * Import css version the same way as above. 
 
 4. If you also want to use foundation js in this theme
     * Run `gulp foundation-js`

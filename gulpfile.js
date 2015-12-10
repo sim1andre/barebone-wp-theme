@@ -27,7 +27,8 @@ var gulpSettings = {
       syncFeatures: {
         clicks: true,
         forms: true,
-        scroll: true
+        scroll: true,
+        location: true
       },
 
   //PHP---------------------------------------
@@ -71,6 +72,8 @@ var rename = require('gulp-rename');
 var sourcemap = require('gulp-sourcemaps');
 var browserify = require('browserify');
 var babelify = require('babelify');
+var uglify = require('gulp-uglify');
+var notify = require('gulp-notify');
 var fs = require('fs');
 var imagemin = require('imagemin');
 var imageminPngquant = require('imagemin-pngquant');
@@ -83,7 +86,7 @@ var imageminJpegtran = require('imagemin-jpegtran');
 
 gulp.task('sass', function() {
   gulp.src(gulpSettings.sassPath)
-  .pipe(plumber())
+  .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
   .pipe(sass())
   .pipe(autoprefixer({
       browsers: ['last 2 versions','> 5%'],
@@ -93,12 +96,13 @@ gulp.task('sass', function() {
   .pipe(cssmin())
   .pipe(rename({ suffix:".min" }))
   .pipe(gulp.dest(gulpSettings.cssPath))
-  .pipe(browserSync.stream());
+  .pipe(browserSync.stream())
+  .pipe(notify({ message: 'Injected css into browser(s) (<%= file.relative %>)'}));
 });
 
 
 //------------------------------------------------------------------------------
-// JS TASK
+// JS TASKS
 //------------------------------------------------------------------------------
 
 gulp.task('js', function (){
@@ -106,13 +110,17 @@ gulp.task('js', function (){
     .transform(babelify)
     .require( gulpSettings.srcJsPath , { entry: true })
     .bundle()
-    .pipe(plumber())
-    .pipe(gulpif(
-      gulpSettings.jsCompress ,
-            fs.createWriteStream( gulpSettings.publicJsCompPath + 'app.min.js' ),
-            fs.createWriteStream( gulpSettings.publicJsPath + 'app.js' )
-      )
-    );
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+    .pipe( fs.createWriteStream( gulpSettings.publicJsPath + 'app.js' ));
+});
+
+gulp.task('js-uglify', function() {
+  return gulp.src( gulpSettings.publicJsPath + 'app.js' )
+  .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+  .pipe(uglify())
+  .pipe(rename({ suffix:'.min' }))
+  .pipe(gulp.dest( gulpSettings.publicJsPath ))
+  .pipe(notify({ message: 'Completed javascript minifying <%= file.relative %>'}));
 });
 
 
@@ -129,6 +137,7 @@ gulp.task('browser-sync', function() {
       port: gulpSettings.port,
       browser: gulpSettings.browsers,
       ghostMode: gulpSettings.syncFeatures,
+      injectChanges: true
   });
 
 });
@@ -140,7 +149,7 @@ gulp.task('browser-sync', function() {
 
 gulp.task('image-opt', function() {
   return gulp.src( gulpSettings.srcImagePath )
-  .pipe(plumber())
+  .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
   .pipe(imageminPngquant({ quality: '60-80', speed: 4})())
   .pipe(imageminJpegtran({ progressive: true})())
   .pipe(gulp.dest( gulpSettings.publicImagePath ));
@@ -176,14 +185,15 @@ gulp.task('foundation-js', function () {
 //------------------------------------------------------------------------------
 
 gulp.task('watch', function() {
-  gulp.watch( gulpSettings.sassPath , ['sass']);
+  gulp.watch( gulpSettings.sassPath , ['sass']).on('change', browserSync.reload);
   gulp.watch( gulpSettings.srcJsPath , ['js']).on('change', browserSync.reload);
+  gulp.watch( gulpSettings.publicJsPath + 'app.js' , ['js-uglify']).on('change', browserSync.reload);
   gulp.watch( gulpSettings.phpPath).on('change', browserSync.reload);
   gulp.watch( gulpSettings.publicImagePath, ['image-opt']).on('change', browserSync.reload);
 });
 
 gulp.task('default', gulpif(  gulpSettings.RunBrowserSync,
-    ['sass','js','browser-sync','image-opt','watch'] ,
+    ['sass','js','browser-sync','image-opt','watch'],
     ['sass','js','image-opt','watch']
   )
 );
