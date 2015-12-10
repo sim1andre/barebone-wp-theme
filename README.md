@@ -3,14 +3,14 @@
 This is a barebone wp theme with Gulp.
 
 
-####Install
+###Install
 1. `git clone https://github.com/sim1andre/barebone-wp-theme.git`
 2. `npm install`
 3. `bower install`
 4. `gulp`
 
 
-####Modes
+###Modes
 
 **Development**
 
@@ -36,7 +36,7 @@ to use files with .min suffix.
 
 
 
-####Gulp features
+###Gulp features
 
 **SASS task**
 
@@ -62,8 +62,8 @@ to use files with .min suffix.
   * Syncing scroll, clicks etc.
 
 
+###Use foundation
 
-####Use foundation in this theme
 1. Make sure you have installed bower.
 2. Deside if you want sass or css version
     * Run `gulp foundation-sass` in your terminal if you want to use sass version.

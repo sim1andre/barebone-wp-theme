@@ -48,7 +48,7 @@ var gulpSettings = {
       publicJsCompPath: './public/js/',
 
   //Images--------------------------------
-  
+
       srcImageRemove: true,
       srcImagePath: './source/images/*.{png,jpg,gif}',
       publicImagePath: './public/images/'
@@ -79,6 +79,27 @@ var uglify = require('gulp-uglify');
 var notify = require('gulp-notify');
 var fs = require('fs');
 var imagemin = require('gulp-imagemin');
+
+
+
+//------------------------------------------------------------------------------
+//Browser Sync TASK
+//------------------------------------------------------------------------------
+
+gulp.task('browser-sync', function() {
+
+  browserSync.init({
+      proxy: {
+        target: gulpSettings.domain,
+      },
+      port: gulpSettings.port,
+      browser: gulpSettings.browsers,
+      ghostMode: gulpSettings.syncFeatures,
+      injectChanges: true
+  });
+
+});
+
 
 
 //------------------------------------------------------------------------------
@@ -118,26 +139,7 @@ gulp.task('js', function (){
 
 
 //------------------------------------------------------------------------------
-//Browser Sync
-//------------------------------------------------------------------------------
-
-gulp.task('browser-sync', function() {
-
-  browserSync.init({
-      proxy: {
-        target: gulpSettings.domain,
-      },
-      port: gulpSettings.port,
-      browser: gulpSettings.browsers,
-      ghostMode: gulpSettings.syncFeatures,
-      injectChanges: true
-  });
-
-});
-
-
-//------------------------------------------------------------------------------
-//IMAGES
+//IMAGE TASK
 //------------------------------------------------------------------------------
 
 gulp.task('images', function() {
@@ -174,7 +176,7 @@ gulp.task('foundation-js', function () {
 
 
 //------------------------------------------------------------------------------
-//WATCH
+//WATCH AND RUN TASKS
 //------------------------------------------------------------------------------
 
 gulp.task('watch', function() {
