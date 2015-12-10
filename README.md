@@ -2,7 +2,6 @@
 
 This is a barebone wp theme with Gulp.
 
-
 ##Install
 
 1. `git clone https://github.com/sim1andre/barebone-wp-theme.git`
@@ -11,7 +10,8 @@ This is a barebone wp theme with Gulp.
 4. `gulp`
 
 Want to use Browsersync? See "How to set up Broewsersync" in this doc
-
+---
+---
 
 ##Modes
 

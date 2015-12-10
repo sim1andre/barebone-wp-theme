@@ -21,7 +21,7 @@ var gulpSettings = {
 
   //Browsersync-------------------------------
 
-      RunBrowserSync: false,
+      RunBrowserSync: true,
       browsers: ['chrome'],
       domain:'localhost/testtheme/', //'localhost/"yourAppFolder"'
       port:4000,
