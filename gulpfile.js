@@ -48,7 +48,8 @@ var gulpSettings = {
       publicJsCompPath: './public/js/',
 
   //Images--------------------------------
-
+  
+      srcImageRemove: true,
       srcImagePath: './source/images/*.{png,jpg,gif}',
       publicImagePath: './public/images/'
 }
@@ -143,7 +144,7 @@ gulp.task('images', function() {
   return gulp.src( gulpSettings.srcImagePath )
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(newer( gulpSettings.publicImagePath ))
-    .pipe(rimraf({ force: true }))
+    .pipe(gulpif( gulpSettings.srcImageRemove, rimraf({ force: true })))
     .pipe(imagemin({ optimizationLevel: 7, progressive: true, interlaced: true }))
     .pipe(gulp.dest( gulpSettings.publicImagePath ))
 });
