@@ -36,6 +36,8 @@ to use files with .min suffix.
 
   `development:true/false;`
 
+
+
 ##Set up Browsersync
 
   1. Go into gulpfile.js
@@ -45,10 +47,10 @@ to use files with .min suffix.
 
     * browsers: ['Add browsers you want to test in']
 
-      * Browsers:
+      * Browsers to choose from:
 
         ````
-        Default 'chrome'
+        'chrome' This is default
         'explorer'
         'firefox'
         'opera'
@@ -57,7 +59,8 @@ to use files with .min suffix.
 
 
     * domain: 'localhost/{"themename"}'
-    
+
+
 
 
 ##Gulp features
@@ -84,6 +87,8 @@ to use files with .min suffix.
   * Injecting changes in css into browser(s).
   * Reload browsers when changes are detected in php and js files.
   * Syncing scroll, clicks etc.
+
+
 
 
 ##Use foundation
