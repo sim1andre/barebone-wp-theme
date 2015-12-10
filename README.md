@@ -14,6 +14,7 @@ This is a barebone wp theme with many features.
 2. Deside if you want sass or css version
     * Run `gulp foundation-sass` in your terminal if you want to use sass version.
         * To import sass version go to app.scss and insert this code
+
           ```
           @import
           '../vendor/foundation/foundation',
@@ -21,7 +22,7 @@ This is a barebone wp theme with many features.
           ```
 
     * Run `gulp foundation-css` in your terminal if you want to use css version.
-       * Import css version the same way as above. 
+       * Import css version the same way as above.
 
 4. If you also want to use foundation js in this theme
     * Run `gulp foundation-js`
