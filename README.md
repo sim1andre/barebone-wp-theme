@@ -35,24 +35,33 @@ to use files with .min suffix.
   `development:true/false;`
 
 
+
 ####Gulp features
 
-  **SASS task**
+**SASS task**
 
   * Compiling sass into regular css.
   * Adding browser prefixes.
   * Minifying css and adding .min suffix to the filename.
 
-  **Javascript task**
+**Javascript task**
 
   * Bundle up all your js files into one file.
   * Convert ES6 into ES5.
   * Minifiying js and adding a .min suffix to the filename.
 
-  **Image task**
+**Image task**
 
-  * Optimize images inside source image folder
-  *
+  * Optimize images inside source image folder.
+  * Removing already optimized images from source folder.
+
+**BrowserSync task**
+
+  * Injecting changes in css into browser(s).
+  * Reload browsers when changes are detected php and js files.
+  * Syncing scroll, clicks etc.
+
+
 
 ####Use foundation in this theme
 1. Make sure you have installed bower.
