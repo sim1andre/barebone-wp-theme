@@ -81,7 +81,7 @@ var imagemin = require('gulp-imagemin');
 
 
 //------------------------------------------------------------------------------
-// SASS TASK (Running autoprefixer, cssmin, rename and gulpif)
+// SASS TASK
 //------------------------------------------------------------------------------
 
 gulp.task('sass', function() {
@@ -184,7 +184,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', gulpif(  gulpSettings.RunBrowserSync,
-    ['sass','js','browser-sync','image-opt','watch'],
-    ['sass','js','image-opt','watch']
+    ['sass','js','browser-sync','images','watch'],
+    ['sass','js','images','watch']
   )
 );
