@@ -11,8 +11,11 @@ This is a barebone wp theme with Gulp.
 
 Want to use Browsersync? See "How to set up Broewsersync" in this doc
 
---
---
+
+<br/>
+<br/>
+<br/>
+<br/>
 
 ##Modes
 
@@ -38,7 +41,10 @@ to use files with .min suffix.
 
   `development:true/false;`
 
-
+  <br/>
+  <br/>
+  <br/>
+  <br/>
 
 ##How to set up Browsersync
 
