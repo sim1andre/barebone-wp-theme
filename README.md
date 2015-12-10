@@ -12,6 +12,7 @@ This is a barebone wp theme with Gulp.
 2. [Envirement modes](#modes)
 3. [About Gulp features](#about-gulp-features)
 4. [Browsersync](#browsersync)
+5. [Cleanup](#cleanup)
 5. [Foundation](#foundation)
 
 
@@ -109,7 +110,10 @@ to use files with .min suffix.**
 **Deployment task**
 
   * Deploy theme to remote server through ftp or sftp.
-  *
+
+**Cleanup task**
+
+  * Cleaning up public folders when changing between envirement modes
 
 <br/>
 <br/>
@@ -117,15 +121,13 @@ to use files with .min suffix.**
 
 ##Browsersync
 
-  1. Go into gulpfile.js
-  2. Find gulpSettings
-  3. Go down to browsersync options
-  4. Change this opions
-
-    * runBrowserSync: true
-    * browsers: ['Add browsers you want to test in']
-
-      * Browsers to choose from:
+1. Go into gulpfile.js
+2. Find gulpSettings
+3. Go down to browsersync options
+4. Change this opions
+  * runBrowserSync: true
+  * browsers: ['Add browsers you want to test in']
+  * Browsers to choose from:
 
         ````
         'chrome' This is default

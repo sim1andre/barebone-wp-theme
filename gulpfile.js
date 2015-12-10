@@ -4,10 +4,9 @@
 //GULP Settings
 //------------------------------------------------------------------------------
 
-
 var gulpSettings = {
 
-    development: true,
+    development: false,
 
   //Node and bower----------------------------
 
@@ -79,7 +78,6 @@ var uglify = require('gulp-uglify');
 var notify = require('gulp-notify');
 var fs = require('fs');
 var imagemin = require('gulp-imagemin');
-
 
 
 //------------------------------------------------------------------------------
@@ -172,6 +170,26 @@ gulp.task('foundation-js', function () {
   return gulp.src(appSettings.bowerDir + 'foundation/js/**/**.*')
   .pipe(gulp.dest(appSettings.sourceVendor + 'foundation'));
 });
+
+
+//------------------------------------------------------------------------------
+//CLEANUP TASK
+//------------------------------------------------------------------------------
+
+
+gulp.task('clean-dev', function() {
+  return gulp.src('./public/**/app.min.{css,js}', {read: false})
+  .pipe(rimraf({ force: true }))
+  .pipe(notify({ message: 'Successfully cleaned up public folders. (Development mode)', onLast: true}));
+});
+
+gulp.task('clean-prod', function() {
+  return gulp.src('./public/**/app.{css,js}', {read: false})
+  .pipe(rimraf({ force: true }))
+  .pipe(notify({ message: 'Successfully cleaned up public folders. (Production mode)', onLast: true}));
+});
+
+gulp.task('clean', gulpif( gulpSettings.development , ['clean-dev'], ['clean-prod']));
 
 
 
