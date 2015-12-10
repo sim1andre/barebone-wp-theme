@@ -1,9 +1,9 @@
-##Barebone-wp-theme
+#Barebone-wp-theme
 
 This is a barebone wp theme with Gulp.
 
 
-###Install
+##Install
 1. `git clone https://github.com/sim1andre/barebone-wp-theme.git`
 2. `npm install`
 3. `bower install`
@@ -12,7 +12,7 @@ This is a barebone wp theme with Gulp.
 
 
 
-###Modes
+##Modes
 
 **Development**
 
@@ -36,9 +36,31 @@ to use files with .min suffix.
 
   `development:true/false;`
 
+##Set up Browsersync
+
+  1. Go into gulpfile.js
+  2. Find gulpSettings
+  3. Go down to browsersync options
+  4. Change this opions
+
+    * browsers: ['Add browsers you want to test in']
+
+      * Browsers:
+
+        ````
+        Default 'chrome'
+        'explorer'
+        'firefox'
+        'opera'
+        'safari'
+        ````
 
 
-###Gulp features
+    * domain: 'localhost/{"themename"}'
+    
+
+
+##Gulp features
 
 **SASS task**
 
@@ -64,7 +86,7 @@ to use files with .min suffix.
   * Syncing scroll, clicks etc.
 
 
-###Use foundation
+##Use foundation
 
 1. Make sure you have installed bower.
 2. Deside if you want sass or css version
@@ -82,25 +104,3 @@ to use files with .min suffix.
 
 4. If you also want to use foundation js in this theme
     * Run `gulp foundation-js`
-
-##Set up Browsersync
-
-1. Go into gulpfile.js
-2. Find gulpSettings
-3. Go down to browsersync options
-4. Change this opions
-
-  * browsers: ['Add browsers you want to test in']
-
-    * Browsers:
-
-      ````
-      Default 'chrome'
-      'explorer'
-      'firefox'
-      'opera'
-      'safari'
-      ````
-
-
-  * domain: 'localhost/{"themename"}'
