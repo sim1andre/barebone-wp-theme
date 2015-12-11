@@ -226,7 +226,7 @@ gulp.task('ftp-upload', function() {
     .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
     .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-    .pipe(notify({ message: 'Successfully uploaded file.', onLast: true}));
+    .pipe(notify({ message: 'Successfully uploaded file(s).', onLast: true}));
 
 });
 

@@ -14,7 +14,7 @@ This is a barebone wp theme with Gulp.
 2. [Environment](#modes)
 3. [Gulp features](#about-gulp-features)
 4. [Browsersync](#browsersync)
-5. [Cleanup](#cleanup)
+5. [FTP](#ftp)
 5. [Foundation](#foundation)
 
 
@@ -189,6 +189,9 @@ to use files with .min suffix.**
   ftpPassword: 'your password',
   ftpRemoteFolder: 'your remote folder'
   ````
+
+  6. Run `gulp deploy` to upload theme.
+
 
 <br/>
 
