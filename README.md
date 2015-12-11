@@ -123,12 +123,21 @@ to use files with .min suffix.**
 
 <br/>
 
-**Set Browsersync to serve files from domain**
+**Set Browsersync to serve files from serverfolder**
 
   1. Open gulpfile.js
   2. Find gulpSettings
   3. Go to browsersync option `domain`
-  4. Set `"yourwebfolder"`.
+  4. Set `"yourwebfolder"`
+
+<br/>
+
+**Set Browsersync to serve files from remote server**
+
+  1. Open gulpfile.js
+  2. Find gulpSettings
+  3. Go to browsersync option `domain`
+  4. Replace `'localhost/yourwebfolder/'` with `http://www.yourdomain.no/`
 
 <br/>
 
