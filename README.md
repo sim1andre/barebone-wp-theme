@@ -123,7 +123,7 @@ to use files with .min suffix.**
 
 <br/>
 
-**Set Browsersync to serve files from serverfolder**
+**Set Browsersync to serve files from localhost**
 
   1. Open gulpfile.js
   2. Find gulpSettings
