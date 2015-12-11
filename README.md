@@ -157,7 +157,7 @@ to use files with .min suffix.**
 
 <br/>
 
-**Start Browsersync**
+**Enable Browsersync**
 
   1. Open gulpfile.js
   2. Find gulpSettings
