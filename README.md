@@ -181,7 +181,7 @@ to use files with .min suffix.**
   1. Open gulpfile.js
   2. Find gulpSettings
   3. Go to ftp options
-  5. Insert your ftp credentials
+  4. Insert your ftp credentials
 
   ````
   ftpHost: 'your hostname/adress',
@@ -190,7 +190,7 @@ to use files with .min suffix.**
   ftpRemoteFolder: 'your remote folder'
   ````
 
-  6. Run `gulp deploy` to upload theme.
+  5. Run `gulp deploy` to upload theme.
 
 
 <br/>
