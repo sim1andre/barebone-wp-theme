@@ -174,6 +174,8 @@ to use files with .min suffix.**
 
 #FTP
 
+<br/>
+
 **Configure ftp for theme deployment**
 
   1. Open gulpfile.js
