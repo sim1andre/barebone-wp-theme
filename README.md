@@ -172,6 +172,28 @@ to use files with .min suffix.**
 <br/>
 <br/>
 
+#FTP
+
+**Enable and configure ftp for theme deployment**
+
+  1. Open gulpfile.js
+  2. Find gulpSettings
+  3. Go to ftp options
+  5. Insert your ftp credentials
+
+  ````
+  ftpHost: 'your hostname/adress',
+  ftpUsername: 'your username',
+  ftpPassword: 'your password',
+  ftpRemoteFolder: 'your remote folder'
+  ````
+
+**Enable auto
+
+
+<br/>
+<br/>
+
 ##Foundation
 
 1. Make sure you have installed bower.
