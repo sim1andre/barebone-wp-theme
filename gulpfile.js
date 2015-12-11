@@ -68,12 +68,14 @@ var gulpSettings = {
 
 var gulp  = require('gulp');
 var browserSync = require('browser-sync');
+var changed = require('gulp-changed');
 var plumber = require('gulp-plumber');
 var gulpif = require('gulp-if');
 var rimraf = require('gulp-rimraf');
 var newer = require('gulp-newer');
 var gutil = require('gulp-util');
 var sass  = require('gulp-sass');
+var cssGlobbing = require('gulp-css-globbing');
 var autoprefixer = require('gulp-autoprefixer');
 var cssmin = require('gulp-cssmin');
 var rename = require('gulp-rename');
@@ -92,6 +94,7 @@ var runSequnce = require('run-sequence');
 
 var theme_absolute_path = path.resolve(__dirname);
 var theme_name = path.basename(theme_absolute_path);
+
 
 //------------------------------------------------------------------------------
 //Browser Sync TASK
@@ -116,8 +119,11 @@ gulp.task('browser-sync', function() {
 //------------------------------------------------------------------------------
 
 gulp.task('sass', function() {
-
   gulp.src(gulpSettings.sassPath)
+  .pipe(cssGlobbing({
+    extensions: ['.scss']
+  }))
+  .pipe(changed(gulpSettings.cssPath))
   .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
   .pipe(sass())
   .pipe(autoprefixer({
@@ -152,11 +158,12 @@ gulp.task('js', function (){
 //------------------------------------------------------------------------------
 
 gulp.task('images', function() {
-  return gulp.src( gulpSettings.srcImagePath )
+  return gulp.src(gulpSettings.srcImagePath)
+    .pipe(changed(gulpSettings.publicImagePath))
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(newer( gulpSettings.publicImagePath ))
     .pipe(imagemin({ optimizationLevel: 7, progressive: true, interlaced: true }))
-    .pipe(gulp.dest( gulpSettings.publicImagePath ))
+    .pipe(gulp.dest( gulpSettings.publicImagePath ));
 });
 
 
