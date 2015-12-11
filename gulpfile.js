@@ -6,9 +6,7 @@
 
 var gulpSettings = {
 
-    development: true,
-    ftpUpload: false,
-    scssLint: true,
+    development: false,
 
   //Node and bower----------------------------
 
@@ -22,9 +20,9 @@ var gulpSettings = {
 
   //Browsersync-------------------------------
 
-      RunBrowserSync: true,
+      RunBrowserSync: false,
       browsers: ['chrome'],
-      domain:'localhost/testtheme/',
+      domain:'webfordeg.net/',
       port:4000,
       syncFeatures: {
         clicks: true,
@@ -50,9 +48,17 @@ var gulpSettings = {
 
   //Images--------------------------------
 
-      srcImageRemove: true,
       srcImagePath: './source/images/*.{png,jpg,gif}',
-      publicImagePath: './public/images/'
+      publicImagePath: './public/images/',
+
+  //FTP----------------------------------
+
+      ftpAutoUpload: true,
+      ftpHost: 'your hostname/adress',
+      ftpUsername: 'your username',
+      ftpPassword: 'your password',
+      ftpRemoteFolder: 'your remote folder'
+
 }
 
 
@@ -82,7 +88,11 @@ var notify = require('gulp-notify');
 var fs = require('fs');
 var imagemin = require('gulp-imagemin');
 var ftp = require('vinyl-ftp');
+var path = require('path');
+var runSequnce = require('run-sequence');
 
+var theme_absolute_path = path.resolve(__dirname);
+var theme_name = path.basename(theme_absolute_path);
 
 //------------------------------------------------------------------------------
 //Browser Sync TASK
@@ -109,6 +119,7 @@ gulp.task('browser-sync', function() {
 //------------------------------------------------------------------------------
 
 gulp.task('sass', function() {
+
   gulp.src(gulpSettings.sassPath)
   .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
   .pipe(sass())
@@ -120,7 +131,6 @@ gulp.task('sass', function() {
   .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
   .pipe(gulp.dest(gulpSettings.cssPath))
   .pipe(browserSync.stream())
-  .pipe(notify({ message: 'Injected css into browser(s) (<%= file.relative %>)', onLast: true}));
 });
 
 
@@ -148,13 +158,83 @@ gulp.task('images', function() {
   return gulp.src( gulpSettings.srcImagePath )
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(newer( gulpSettings.publicImagePath ))
-    .pipe(gulpif( gulpSettings.srcImageRemove, rimraf({ force: true })))
     .pipe(imagemin({ optimizationLevel: 7, progressive: true, interlaced: true }))
     .pipe(gulp.dest( gulpSettings.publicImagePath ))
 });
 
+
+
 //------------------------------------------------------------------------------
-//IMPORT FOUNDATION TASKS
+//CLEANUP TASK
+//------------------------------------------------------------------------------
+
+gulp.task('clean-prod', function() {
+  return gulp.src(['./public/**/app.{css,js}', './**/.gitkeep'], {read: false})
+  .pipe(rimraf({ force: true }))
+  .pipe(notify({ message: 'Successfully cleaned up public folders. (Production mode)', onLast: true}));
+});
+
+
+//------------------------------------------------------------------------------
+//FTP TASK
+//------------------------------------------------------------------------------
+
+var globals = [
+    'source/**',
+    'public/**',
+    '*.php',
+    '*.json',
+    '*.css',
+    '*.bower',
+    '*.js',
+    '*.md',
+    'gulpfile.js'
+];
+
+gulp.task('deploy-theme', function() {
+
+  var connection = ftp.create({
+    host: gulpSettings.ftpHost,
+    user: gulpSettings.ftpUsername,
+    password: gulpSettings.ftpPassword,
+    paralell: 10,
+    log: gutil.log
+  });
+
+  return gulp.src( globals, { base: '.', buffer: false })
+    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+    .pipe(notify({ message: 'Successfully deployed theme to remote server.', onLast: true}));
+
+});
+
+gulp.task('deploy', function() {
+  runSequnce('clean-prod', ['deploy-theme']);
+});
+
+gulp.task('ftp-upload', function() {
+
+  var connection = ftp.create({
+    host: gulpSettings.ftpHost,
+    user: gulpSettings.ftpUsername,
+    password: gulpSettings.ftpPassword,
+    paralell: 10,
+    log: gutil.error
+  });
+
+  return gulp.src( globals, { base: '.', buffer: false })
+    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+    .pipe(notify({ message: 'Successfully uploaded file.', onLast: true}));
+
+});
+
+
+
+//------------------------------------------------------------------------------
+//FOUNDATION TASKS
 //------------------------------------------------------------------------------
 
 //Imports foundation css into public/css folder
@@ -176,47 +256,16 @@ gulp.task('foundation-js', function () {
 });
 
 
-//------------------------------------------------------------------------------
-//CLEANUP TASK
-//------------------------------------------------------------------------------
-
-
-gulp.task('clean-dev', function() {
-  return gulp.src('./public/**/app.min.{css,js}', {read: false})
-  .pipe(rimraf({ force: true }))
-  .pipe(notify({ message: 'Successfully cleaned up public folders. (Development mode)', onLast: true}));
-});
-
-gulp.task('clean-prod', function() {
-  return gulp.src('./public/**/app.{css,js}', {read: false})
-  .pipe(rimraf({ force: true }))
-  .pipe(notify({ message: 'Successfully cleaned up public folders. (Production mode)', onLast: true}));
-});
-
-gulp.task('clean', gulpif( gulpSettings.development , ['clean-dev'], ['clean-prod']));
-
-
-//------------------------------------------------------------------------------
-//WATCH AND RUN TASKS
-//------------------------------------------------------------------------------
-
-
-gulp.task('deploy', function() {
-
-});
-
-
-
 
 //------------------------------------------------------------------------------
 //WATCH AND RUN TASKS
 //------------------------------------------------------------------------------
 
 gulp.task('watch', function() {
-  gulp.watch( gulpSettings.sassPath , ['sass']).on('change', browserSync.reload);
-  gulp.watch( gulpSettings.srcJsPath , ['js']).on('change', browserSync.reload);
-  gulp.watch( gulpSettings.phpPath).on('change', browserSync.reload);
-  gulp.watch( gulpSettings.publicImagePath, ['images']).on('change', browserSync.reload);
+  gulp.watch( gulpSettings.sassPath , gulpif( gulpSettings.ftpAutoUpload, ['sass','ftp-upload'] , ['sass'])).on('change', browserSync.reload);
+  gulp.watch( gulpSettings.srcJsPath , gulpif( gulpSettings.ftpAutoUpload, ['js', 'ftp-upload'] , ['js'] )).on('change', browserSync.reload);
+  gulp.watch( gulpSettings.phpPath, gulpif( gulpSettings.ftpAutoUpload, ['ftp-upload'] )).on('change', browserSync.reload);
+  gulp.watch( gulpSettings.publicImagePath, gulpif ( gulpSettings.ftpAutoUpload, ['images', 'ftp-upload'] , ['images'])).on('change', browserSync.reload);
 });
 
 gulp.task('default', gulpif(  gulpSettings.RunBrowserSync,

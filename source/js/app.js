@@ -7,7 +7,7 @@ const dev = true;
 $d.ready(function() {
 
   if(dev) {
-    console.log('jQuery is running');
+    console.log('jQuery is running!');
   }
 
 });
