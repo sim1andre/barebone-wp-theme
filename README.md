@@ -109,7 +109,8 @@ to use files with .min suffix.**
 
 **Deployment task**
 
-  * Deploy theme to remote server through ftp or sftp.
+  * Deploy theme to remote server through ftp.
+  * Uploading changed files to remote server.
 
 **Cleanup task**
 
@@ -127,7 +128,7 @@ to use files with .min suffix.**
   1. Open gulpfile.js
   2. Find gulpSettings
   3. Go to browsersync option `domain`
-  4. Set `"yourthemename"` to your theme folder name.
+  4. Set `"yourwebfolder"`.
 
 <br/>
 

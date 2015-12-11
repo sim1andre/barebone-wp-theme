@@ -6,7 +6,9 @@
 
 var gulpSettings = {
 
-    development: false,
+    development: true,
+    ftpUpload: false,
+    scssLint: true,
 
   //Node and bower----------------------------
 
@@ -22,7 +24,7 @@ var gulpSettings = {
 
       RunBrowserSync: true,
       browsers: ['chrome'],
-      domain:'localhost/"yourthemename"/', //'localhost/"yourAppFolder"'
+      domain:'localhost/testtheme/',
       port:4000,
       syncFeatures: {
         clicks: true,
@@ -64,6 +66,7 @@ var plumber = require('gulp-plumber');
 var gulpif = require('gulp-if');
 var rimraf = require('gulp-rimraf');
 var newer = require('gulp-newer');
+var gutil = require('gulp-util');
 var scsslint = require('gulp-scss-lint');
 var sass  = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
@@ -78,6 +81,7 @@ var uglify = require('gulp-uglify');
 var notify = require('gulp-notify');
 var fs = require('fs');
 var imagemin = require('gulp-imagemin');
+var ftp = require('vinyl-ftp');
 
 
 //------------------------------------------------------------------------------
@@ -116,7 +120,7 @@ gulp.task('sass', function() {
   .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
   .pipe(gulp.dest(gulpSettings.cssPath))
   .pipe(browserSync.stream())
-  .pipe(notify({ message: 'Injected css into browser(s) (<%= file.relative %>)'}));
+  .pipe(notify({ message: 'Injected css into browser(s) (<%= file.relative %>)', onLast: true}));
 });
 
 
@@ -190,6 +194,17 @@ gulp.task('clean-prod', function() {
 });
 
 gulp.task('clean', gulpif( gulpSettings.development , ['clean-dev'], ['clean-prod']));
+
+
+//------------------------------------------------------------------------------
+//WATCH AND RUN TASKS
+//------------------------------------------------------------------------------
+
+
+gulp.task('deploy', function() {
+
+});
+
 
 
 
