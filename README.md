@@ -174,7 +174,7 @@ to use files with .min suffix.**
 
 #FTP
 
-**Enable and configure ftp for theme deployment**
+**Configure ftp for theme deployment**
 
   1. Open gulpfile.js
   2. Find gulpSettings
@@ -188,8 +188,14 @@ to use files with .min suffix.**
   ftpRemoteFolder: 'your remote folder'
   ````
 
-**Enable auto
+<br/>
 
+**Enable auto upload on file change**
+
+  1. Open gulpfile.js
+  2. Find gulpSettings
+  3. Go to ftp options
+  5. Set `ftpAutoUpload` to `true`
 
 <br/>
 <br/>
