@@ -22,7 +22,7 @@ var gulpSettings = {
 
       RunBrowserSync: false,
       browsers: ['chrome'],
-      domain:'webfordeg.net/',
+      domain:'localhost/yourwebfolder/',
       port:4000,
       syncFeatures: {
         clicks: true,
