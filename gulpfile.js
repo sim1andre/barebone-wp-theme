@@ -6,7 +6,7 @@
 
 var gulpSettings = {
 
-    development: false,
+    development: true,
 
   //Node and bower----------------------------
 
@@ -53,7 +53,7 @@ var gulpSettings = {
 
   //FTP----------------------------------
 
-      ftpAutoUpload: true,
+      ftpAutoUpload: false,
       ftpHost: 'your hostname/adress',
       ftpUsername: 'your username',
       ftpPassword: 'your password',
@@ -73,7 +73,6 @@ var gulpif = require('gulp-if');
 var rimraf = require('gulp-rimraf');
 var newer = require('gulp-newer');
 var gutil = require('gulp-util');
-var scsslint = require('gulp-scss-lint');
 var sass  = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var cssmin = require('gulp-cssmin');
