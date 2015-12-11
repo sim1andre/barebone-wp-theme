@@ -110,11 +110,14 @@ to use files with .min suffix.**
 **Deployment task**
 
   * Deploy theme to remote server through ftp.
+
+**FTP task**
+
   * Uploading changed files to remote server.
 
 **Cleanup task**
 
-  * Cleaning up public folders when changing between envirement modes
+  * Automatically clean up public folders when deploying theme to remote server
 
 <br/>
 <br/>
