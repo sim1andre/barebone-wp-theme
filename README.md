@@ -4,7 +4,7 @@ This is a barebone wp theme with advanced Gulp features.
 
 **Some of the features:**
 
-* Use Jade templates
+* Write Jade and compile them into php
 
 
 
