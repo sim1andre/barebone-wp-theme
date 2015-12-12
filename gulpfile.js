@@ -7,7 +7,7 @@
 var gulpSettings = {
 
     development: true,
-    useJade: true,
+    useJade: false,
     ftpAutoUpload: false,
 
   //Root--------------------------------------

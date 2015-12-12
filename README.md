@@ -39,13 +39,11 @@ This is a barebone wp theme with advanced Gulp features.
 2. Run command below to clone repository into themes folder.
   * `git clone https://github.com/sim1andre/barebone-wp-theme.git "YOURTHEMENAME"`
 
-2. Run `npm install` to install all node dependencies.
-
-3. Run `bower install` to install bower libraries.
-
-4. If first run, choose php or jade mode. Run `gulp use-php` or `gulp use-jade`
-
-5. Start gulp by running `gulp`
+3. Run `npm install` to install all node dependencies.
+4. Run `bower install` to install bower libraries.
+5. First run? Choose php or jade mode. Run `gulp use-php` or `gulp use-jade`.
+6. Use Jade by going to gulpfile and set `useJade` to `true`.
+7. Start gulp by running `gulp`.
 
 <br/>
 <br/>
