@@ -103,6 +103,10 @@ var uglify = require('gulp-uglify');
 var notify = require('gulp-notify');
 var fs = require('fs');
 var imagemin = require('gulp-imagemin');
+var imageminJpegtran = require('imagemin-jpegtran');
+var pngquant = require('imagemin-pngquant');
+var imageminOptipng = require('imagemin-optipng');
+var imageminGifsicle = require('imagemin-gifsicle');
 var ftp = require('vinyl-ftp');
 var path = require('path');
 var runSequnce = require('run-sequence');
@@ -212,7 +216,14 @@ gulp.task('images', function() {
     .pipe(changed(gulpSettings.publicImagePath))
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(newer( gulpSettings.publicImagePath ))
-    .pipe(imagemin({ optimizationLevel: 7, progressive: true, interlaced: true }))
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [{removeViewBox: false}],
+      use: [pngquant()]
+     }))
+    .pipe(imageminOptipng({optimizationLevel: 7})())
+    .pipe(imageminGifsicle({interlaced: true})())
+    .pipe(imageminJpegtran({ progressive: true })())
     .pipe(gulp.dest( gulpSettings.publicImagePath ));
 });
 
@@ -320,7 +331,7 @@ gulp.task('watch', function() {
     gulp.watch( gulpSettings.jadePath, gulpif( gulpSettings.ftpAutoUpload, ['jade', 'ftp-upload'], ['jade'] )).on('change', browserSync.reload);
   }
   gulp.watch( gulpSettings.phpPath, gulpif( gulpSettings.ftpAutoUpload, ['ftp-upload'] )).on('change', browserSync.reload);
-  gulp.watch( gulpSettings.publicImagePath, gulpif ( gulpSettings.ftpAutoUpload, ['images', 'ftp-upload'] , ['images'])).on('change', browserSync.reload);
+  gulp.watch( gulpSettings.srcImagePath , gulpif ( gulpSettings.ftpAutoUpload, ['images', 'ftp-upload'] , ['images'])).on('change', browserSync.reload);
 });
 
 if(gulpSettings.useJade) {
