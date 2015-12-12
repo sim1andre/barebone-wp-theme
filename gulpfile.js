@@ -84,6 +84,8 @@ var browserSync = require('browser-sync');
 var jade = require('gulp-jade-php');
 var changed = require('gulp-changed');
 var plumber = require('gulp-plumber');
+var watch = require('gulp-watch');
+var filter = require('gulp-filter');
 var prompt = require('gulp-prompt');
 var gulpif = require('gulp-if');
 var rimraf = require('gulp-rimraf');
@@ -213,9 +215,7 @@ gulp.task('js', function (){
 
 gulp.task('images', function() {
   return gulp.src(gulpSettings.srcImagePath)
-    .pipe(changed(gulpSettings.publicImagePath))
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-    .pipe(newer( gulpSettings.publicImagePath ))
     .pipe(imagemin({
       progressive: true,
       svgoPlugins: [{removeViewBox: false}],
@@ -323,6 +323,28 @@ gulp.task('foundation-js', function () {
 //------------------------------------------------------------------------------
 //WATCH AND RUN TASKS
 //------------------------------------------------------------------------------
+
+
+gulp.task('callback', function (cb) {
+    watch( gulpSettings.sassPath, function () {
+        gulp.src( gulpSettings.sassPath )
+            .pipe(watch( gulpSettings.sassPath )).on(['add'], cb)
+            .pipe(plumber())
+            .pipe(cssGlobbing({
+              extensions: ['.scss']
+            }))
+            .pipe(sass())
+            .pipe(autoprefixer({
+                browsers: ['last 2 versions','> 5%'],
+                cascade: false
+            }))
+            .pipe(gulpif( !gulpSettings.development , cssmin()))
+            .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
+            .pipe(gulp.dest('sass-test'))
+            .pipe(gulpif( gulpSettings.RunBrowserSync ,  browserSync.stream()));
+    });
+});
+
 
 gulp.task('watch', function() {
   gulp.watch( gulpSettings.sassPath , gulpif( gulpSettings.ftpAutoUpload, ['sass','ftp-upload'] , ['sass'])).on('change', browserSync.reload);
