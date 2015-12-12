@@ -7,6 +7,8 @@
 var gulpSettings = {
 
     development: true,
+    useJade: true,
+    ftpAutoUpload: false,
 
   //Root--------------------------------------
 
@@ -37,8 +39,8 @@ var gulpSettings = {
 
   //Jade--------------------------------------
 
-      useJade: false,
       jadeSrc: './source/jade/',
+      jadeFolder: './source/jade',
       jadePath: './source/jade/**/*.jade',
       jadeDest: './',
 
@@ -49,7 +51,7 @@ var gulpSettings = {
 
   //Sass and CSS-----------------------------
 
-      sassPath: './source/sass/**/*.scss',
+      sassPath: './source/scss/**/*.scss',
       cssPath: './public/css/',
 
   //Javascript------------------------------
@@ -65,7 +67,6 @@ var gulpSettings = {
 
   //FTP----------------------------------
 
-      ftpAutoUpload: false,
       ftpHost: 'your hostname/adress',
       ftpUsername: 'your username',
       ftpPassword: 'your password',
@@ -83,7 +84,7 @@ var browserSync = require('browser-sync');
 var jade = require('gulp-jade-php');
 var changed = require('gulp-changed');
 var plumber = require('gulp-plumber');
-var confirm = require('gulp-confirm');
+var prompt = require('gulp-prompt');
 var gulpif = require('gulp-if');
 var rimraf = require('gulp-rimraf');
 var newer = require('gulp-newer');
@@ -134,27 +135,24 @@ gulp.task('browser-sync', function() {
 //------------------------------------------------------------------------------
 
 
-//Copy files from root to templates
-
 gulp.task('use-jade', function() {
-    gulp.src( gulpSettings.root + 'test.php' , { read: false })
-      .pipe(confirm({
-        question: 'Are you sure you want to use Jade? Every php file in root will be deleted',
-        input: '_key:y'
-      }))
-      .pipe(rimraf())
-      .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-      .pipe(notify({ message: 'Successfully runned task. (Jade mode)', onLast: true}));
+  return gulp.src( gulpSettings.root + '*.php')
+    .pipe(prompt.confirm({
+      message: 'Sure you want to use Jade? All php files will be deleted',
+      default: true
+    }))
+    .pipe(rimraf())
+    .pipe(notify({ message: 'Successfully changed mode. (Jade mode)', onLast: true}));
 });
 
 gulp.task('use-php', function() {
-    return gulp.src( './source/jade/*.jade' )
-      .pipe(confirm({
-        question: 'Are you sure you want to use PHP? Jade folder will be deleted',
-        input: '_key:y'
-      }))
-      .pipe(rimraf())
-      .pipe(notify({ message: 'Successfully runned task. (PHP mode)', onLast: true}));
+  return gulp.src( gulpSettings.jadeFolder )
+    .pipe(prompt.confirm({
+      message: 'Sure you want to use PHP? Jade folder will be deleted',
+      default: true
+    }))
+    .pipe(rimraf())
+    .pipe(notify({ message: 'Successfully changed mode. (PHP mode)', onLast: true}));
 });
 
 
@@ -244,8 +242,7 @@ var globals = [
     '*.css',
     '*.bower',
     '*.js',
-    '*.md',
-    'gulpfile.js'
+    '*.md'
 ];
 
 gulp.task('deploy-theme', function() {
@@ -313,7 +310,6 @@ gulp.task('foundation-js', function () {
 });
 
 
-
 //------------------------------------------------------------------------------
 //WATCH AND RUN TASKS
 //------------------------------------------------------------------------------
@@ -321,13 +317,16 @@ gulp.task('foundation-js', function () {
 gulp.task('watch', function() {
   gulp.watch( gulpSettings.sassPath , gulpif( gulpSettings.ftpAutoUpload, ['sass','ftp-upload'] , ['sass'])).on('change', browserSync.reload);
   gulp.watch( gulpSettings.srcJsPath , gulpif( gulpSettings.ftpAutoUpload, ['js', 'ftp-upload'] , ['js'] )).on('change', browserSync.reload);
+  if(gulpSettings.useJade) {
+    gulp.watch( gulpSettings.jadePath, gulpif( gulpSettings.ftpAutoUpload, ['jade', 'ftp-upload'], ['jade'] )).on('change', browserSync.reload);
+  }
   gulp.watch( gulpSettings.phpPath, gulpif( gulpSettings.ftpAutoUpload, ['ftp-upload'] )).on('change', browserSync.reload);
-  gulp.watch( gulpSettings.jadePath, gulpif( gulpSettings.ftpAutoUpload && gulpSettings.useJade , ['ftp-upload','jade'] )).on('change', browserSync.reload);
   gulp.watch( gulpSettings.publicImagePath, gulpif ( gulpSettings.ftpAutoUpload, ['images', 'ftp-upload'] , ['images'])).on('change', browserSync.reload);
 });
 
-gulp.task('default', gulpif(  gulpSettings.RunBrowserSync,
-    ['sass','js','browser-sync','images','watch'],
-    ['sass','js','images','watch']
-  )
-);
+if(gulpSettings.useJade) {
+  gulp.task('default' , gulpif(  gulpSettings.RunBrowserSync , ['jade','sass','js','browser-sync','images','watch'], ['jade','sass','js','images','watch'] ));
+}
+else {
+  gulp.task('default' , gulpif(  gulpSettings.RunBrowserSync , ['sass','js','browser-sync','images','watch'], ['sass','js','images','watch'] ));
+}

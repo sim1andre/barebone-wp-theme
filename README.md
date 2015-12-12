@@ -4,9 +4,11 @@ This is a barebone wp theme with advanced Gulp features.
 
 **Some of the features:**
 
-* Write Jade and compile them into php
-
-
+* Write Jade and compile into php.
+* Use Sass and compile into regular css.
+* Bundle up all your js files into one file.
+* Deploy theme to remote server.
+* Upload changes automatically to remote server.
 
 <br/>
 <br/>
@@ -22,7 +24,6 @@ This is a barebone wp theme with advanced Gulp features.
 4. [Browsersync](#browsersync)
 5. [FTP](#ftp)
 5. [Foundation](#foundation)
-
 
 <br/>
 <br/>
