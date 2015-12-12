@@ -52,6 +52,7 @@ var gulpSettings = {
   //Sass and CSS-----------------------------
 
       sassPath: './source/scss/**/*.scss',
+      sassFolder:'./source/scss/',
       cssPath: './public/css/',
 
   //Javascript------------------------------
@@ -343,6 +344,21 @@ gulp.task('callback', function (cb) {
             .pipe(gulp.dest('sass-test'))
             .pipe(gulpif( gulpSettings.RunBrowserSync ,  browserSync.stream()));
     });
+});
+
+
+
+gulp.task('new-file', function () {
+  watch( gulpSettings.root + '**/*.*' ).on('add', function(file) {
+
+    var filepath = file;
+    var filename = path.basename(filepath);
+    var filetype = path.extname(filename).substr(1);
+
+    gulp.src( file )
+    .pipe(notify("New " + filetype + " file created: " + filename));
+
+  });
 });
 
 
