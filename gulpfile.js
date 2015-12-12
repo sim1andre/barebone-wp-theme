@@ -136,7 +136,7 @@ gulp.task('browser-sync', function() {
 
 
 gulp.task('use-jade', function() {
-  return gulp.src( gulpSettings.root + '*.php')
+  return gulp.src( ['!./functions.php','./*.php'] )
     .pipe(prompt.confirm({
       message: 'Sure you want to use Jade? All php files will be deleted',
       default: true
@@ -154,7 +154,6 @@ gulp.task('use-php', function() {
     .pipe(rimraf())
     .pipe(notify({ message: 'Successfully changed mode. (PHP mode)', onLast: true}));
 });
-
 
 gulp.task('jade', function() {
   return gulp.src( gulpSettings.jadePath )
