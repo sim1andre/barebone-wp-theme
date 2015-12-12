@@ -136,7 +136,7 @@ gulp.task('browser-sync', function() {
 
 
 gulp.task('use-jade', function() {
-  return gulp.src( ['!./functions.php','./*.php'] )
+  return gulp.src( ['./*.php','!./functions.php'] )
     .pipe(prompt.confirm({
       message: 'Sure you want to use Jade? All php files will be deleted',
       default: true
