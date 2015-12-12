@@ -23,6 +23,7 @@ This is a barebone wp theme with advanced Gulp features.
 
 1. [Getting started](#getting-started)
 2. [Environment](#modes)
+3. [Jade](#jade)
 3. [Browsersync](#browsersync)
 4. [FTP](#ftp)
 5. [Foundation](#foundation)
@@ -79,6 +80,18 @@ In this mode the css and js are beeing minified.
 **When you are going from development to production you will need to change the functions.php
 to use files with .min suffix.**
 
+
+<br/>
+<br/>
+
+##Jade
+
+<br/>
+
+**Using Jade**
+
+  1. You find jade template inside source folder.
+  2. Use Jade by going to gulpfile and set `useJade` to `true`.
 
 <br/>
 <br/>
