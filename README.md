@@ -2,11 +2,14 @@
 
 This is a barebone wp theme with advanced Gulp features.
 
-**Some of the features:**
+**Features:**
 
 * Write Jade and compile into php.
 * Use Sass and compile into regular css.
+* Adding browserprefixes and minify css.
 * Bundle up all your js files into one file.
+* Convert ES6 into ES5 and minify it.
+* Use Browsersync.
 * Deploy theme to remote server.
 * Upload changes automatically to remote server.
 
@@ -20,9 +23,8 @@ This is a barebone wp theme with advanced Gulp features.
 
 1. [Getting started](#getting-started)
 2. [Environment](#modes)
-3. [Gulp features](#about-gulp-features)
-4. [Browsersync](#browsersync)
-5. [FTP](#ftp)
+3. [Browsersync](#browsersync)
+4. [FTP](#ftp)
 5. [Foundation](#foundation)
 
 <br/>
@@ -41,7 +43,7 @@ This is a barebone wp theme with advanced Gulp features.
 
 3. Run `bower install` to install bower libraries.
 
-4. Choose php or jade files. Run `gulp use-php` or `gulp use-jade`
+4. If first run, choose php or jade mode. Run `gulp use-php` or `gulp use-jade`
 
 5. Start gulp by running `gulp`
 
@@ -60,8 +62,7 @@ is not getting minified.
 **Production**
 
 This is the mode that you will use when you are in a production envirement.
-In this mode the css and js are beeing minified and the regular css and js is
-removed from public folder.
+In this mode the css and js are beeing minified.
 
 <br/>
 
@@ -80,49 +81,6 @@ removed from public folder.
 **When you are going from development to production you will need to change the functions.php
 to use files with .min suffix.**
 
-
-<br/>
-<br/>
-
-
-##About Gulp features
-
-<br/>
-
-**SASS task**
-
-  * Compiling sass into regular css.
-  * Adding browser prefixes.
-  * Minifying css and adding .min suffix to the filename.
-
-**Javascript task**
-
-  * Bundle up all your js files into one file.
-  * Convert ES6 into ES5.
-  * Minifiying js and adding a .min suffix to the filename.
-
-**Image task**
-
-  * Optimize images inside source image folder.
-  * Removing already optimized images from source folder.
-
-**BrowserSync task**
-
-  * Injecting changes in css into browser(s).
-  * Reload browsers when changes are detected in php and js files.
-  * Syncing scroll, clicks etc.
-
-**Deployment task**
-
-  * Deploy theme to remote server through ftp.
-
-**FTP task**
-
-  * Uploading changed files to remote server.
-
-**Cleanup task**
-
-  * Automatically clean up public folders when deploying theme to remote server
 
 <br/>
 <br/>
