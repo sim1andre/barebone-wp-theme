@@ -9,6 +9,7 @@ var gulpSettings = {
     development: true,
     useJade: false,
     ftpAutoUpload: false,
+    consoleMsg:false,
 
   //Root--------------------------------------
 
@@ -26,9 +27,9 @@ var gulpSettings = {
 
   //Browsersync-------------------------------
 
-      RunBrowserSync: false,
+      RunBrowserSync: true,
       browsers: ['chrome'],
-      domain:'localhost/yourwebfolder/',
+      domain:'localhost/testtheme/',
       port:4000,
       syncFeatures: {
         clicks: true,
@@ -68,7 +69,7 @@ var gulpSettings = {
 
   //FTP----------------------------------
 
-      ftpHost: 'your hostname/adress',
+      ftpHost: 'your hostname/address',
       ftpUsername: 'your username',
       ftpPassword: 'your password',
       ftpRemoteFolder: 'your remote folder'
@@ -114,6 +115,9 @@ var ftp = require('vinyl-ftp');
 var path = require('path');
 var runSequnce = require('run-sequence');
 
+
+//Getting path and foldername of theme.
+//Using theme_name in ftp upload.
 var theme_absolute_path = path.resolve(__dirname);
 var theme_name = path.basename(theme_absolute_path);
 
@@ -135,7 +139,6 @@ gulp.task('browser-sync', function() {
   });
 
 });
-
 
 //------------------------------------------------------------------------------
 // TEMPLATE TASK
@@ -162,21 +165,13 @@ gulp.task('use-php', function() {
     .pipe(notify({ message: 'Successfully changed mode. (PHP mode)', onLast: true}));
 });
 
-gulp.task('jade', function() {
-  return gulp.src( gulpSettings.jadePath )
-    .pipe(jade({
-      pretty: true
-    }))
-    .pipe(gulp.dest( gulpSettings.jadeDest ));
-});
-
 
 //------------------------------------------------------------------------------
 // SASS TASK
 //------------------------------------------------------------------------------
 
-gulp.task('sass', function() {
-  gulp.src(gulpSettings.sassPath)
+gulp.task('sass-build', function() {
+  gulp.src( gulpSettings.sassPath )
   .pipe(cssGlobbing({
     extensions: ['.scss']
   }))
@@ -187,10 +182,7 @@ gulp.task('sass', function() {
       browsers: ['last 2 versions','> 5%'],
       cascade: false
   }))
-  .pipe(gulpif( !gulpSettings.development , cssmin()))
-  .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
-  .pipe(gulp.dest(gulpSettings.cssPath))
-  .pipe(browserSync.stream())
+  .pipe(gulp.dest(gulpSettings.cssPath));
 });
 
 
@@ -198,14 +190,13 @@ gulp.task('sass', function() {
 // JS TASKS
 //------------------------------------------------------------------------------
 
-gulp.task('js', function (){
+gulp.task('js-build', function (){
   return browserify({entries: gulpSettings.srcJsPath, debug: true })
     .transform(babelify)
     .bundle()
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(source('app.js'))
     .pipe(gulpif( !gulpSettings.development, streamify(uglify())))
-    .pipe(gulpif( !gulpSettings.development, rename({ suffix:'.min' })))
     .pipe(gulp.dest( gulpSettings.publicJsPath ));
 });
 
@@ -214,7 +205,7 @@ gulp.task('js', function (){
 //IMAGE TASK
 //------------------------------------------------------------------------------
 
-gulp.task('images', function() {
+gulp.task('images-build', function() {
   return gulp.src(gulpSettings.srcImagePath)
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(imagemin({
@@ -227,6 +218,16 @@ gulp.task('images', function() {
     .pipe(imageminJpegtran({ progressive: true })())
     .pipe(gulp.dest( gulpSettings.publicImagePath ));
 });
+
+
+gulp.task('build', function(callback) {
+  runSequnce(['sass-build', 'js-build','images-build'], completedTask)
+});
+
+//After runned multiple tasks
+var completedTask = function(callback) {
+  gutil.log(gutil.colors.magenta('Build completed.'));
+}
 
 
 
@@ -325,41 +326,82 @@ gulp.task('foundation-js', function () {
 //WATCH AND RUN TASKS
 //------------------------------------------------------------------------------
 
+gulp.task('jade', function(cb) {
+  watch( gulpSettings.jadePath , function (cb) {
+    return gulp.src( gulpSettings.jadePath )
+      .pipe(jade({
+        pretty: true
+      }))
+      .pipe(gulp.dest( gulpSettings.jadeDest ));
+  });
+});
 
-gulp.task('callback', function (cb) {
-    watch( gulpSettings.sassPath, function () {
+
+gulp.task('js', function (cb){
+
+  watch( gulpSettings.srcJsPath, function (cb) {
+
+    return browserify({entries: gulpSettings.srcJsPath, debug: true })
+      .transform(babelify)
+      .bundle()
+      .pipe(plumber())
+      .pipe(source('app.js'))
+      .pipe(gulpif( !gulpSettings.development, streamify(uglify())))
+      .pipe(gulpif( !gulpSettings.development, rename({ suffix:'.min' })))
+      .pipe(gulp.dest( gulpSettings.publicJsPath ));
+
+  });
+
+});
+
+
+gulp.task('sass', function (cb) {
+    watch( gulpSettings.sassPath, function (cb) {
         gulp.src( gulpSettings.sassPath )
-            .pipe(watch( gulpSettings.sassPath )).on(['add'], cb)
-            .pipe(plumber())
-            .pipe(cssGlobbing({
+          .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+          .pipe(cssGlobbing({
               extensions: ['.scss']
-            }))
-            .pipe(sass())
-            .pipe(autoprefixer({
-                browsers: ['last 2 versions','> 5%'],
-                cascade: false
-            }))
-            .pipe(gulpif( !gulpSettings.development , cssmin()))
-            .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
-            .pipe(gulp.dest('sass-test'))
-            .pipe(gulpif( gulpSettings.RunBrowserSync ,  browserSync.stream()));
+          }))
+          .pipe(sass())
+          .pipe(autoprefixer({
+              browsers: ['last 2 versions','> 5%'],
+              cascade: false
+          }))
+          .pipe(gulpif( !gulpSettings.development , cssmin()))
+          .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
+          .pipe(gulp.dest(gulpSettings.cssPath))
+          .pipe(gulpif( gulpSettings.RunBrowserSync ,  browserSync.stream()));
     });
 });
 
 
+gulp.task('check-files', function () {
 
-gulp.task('new-file', function () {
-  watch( gulpSettings.root + '**/*.*' ).on('add', function(file) {
+  watch( './source/**/**' , ['jade','sass','js'] ).on('add', function (file) {
 
     var filepath = file;
     var filename = path.basename(filepath);
     var filetype = path.extname(filename).substr(1);
 
-    gulp.src( file )
-    .pipe(notify("New " + filetype + " file created: " + filename));
+    return gulp.src( file, { read: false })
+    .pipe(plumber())
+    .pipe(notify({'title':'New file created','message': filename }));
+  });
+  watch( './source/**/**', ['jade','sass','js'] ).on('change', browserSync.reload);
+  watch( './source/**/**', ['jade','sass','js'] ).on('change', function (file) {
 
+    var filepath = file;
+    var filename = path.basename(filepath);
+    var filetype = path.extname(filename).substr(1);
+
+    return gulp.src( file, { read: false })
+    .pipe(plumber())
+    .pipe(notify({ 'title':'File changed','message': filename }));
   });
 });
+
+gulp.task('sass-watch', ['jade','sass','js','browser-sync','check-files']);
+
 
 
 gulp.task('watch', function() {
