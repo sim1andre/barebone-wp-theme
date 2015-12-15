@@ -47,8 +47,7 @@ This will work for all filetypes.*
 
 3. Run `npm install` to install all node dependencies.
 4. Run `bower install` to install bower libraries.
-5. First run? Choose php or jade mode. Run `gulp use-php` or `gulp use-jade`.
-6. Use Jade by going to gulpfile and set `useJade` to `true`.
+5. Before you can start coding. Run `gulp build` to create public folders.
 7. Start gulp by running `gulp`.
 
 <br/>
@@ -95,8 +94,8 @@ to use files with .min suffix.**
 
 **Using Jade**
 
-  1. You find jade template inside source folder.
-  2. Use Jade by going to gulpfile and set `useJade` to `true`.
+  1. Cleanup site before using jade by running `gulp use-jade`
+  2. Use Jade by setting `useJade` to `true`.
 
 <br/>
 <br/>

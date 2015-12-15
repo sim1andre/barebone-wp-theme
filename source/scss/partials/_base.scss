@@ -1,0 +1,17 @@
+@import
+'partials/settings',
+'partials/functions',
+'partials/mixins',
+'partials/placeholders',
+'partials/reset';
+
+body {
+  font-family: $font-family;
+  padding: 0;
+  margin: 0;
+  background: rgb(240,240,240);
+}
+
+* {
+  box-sizing:border-box;
+}

@@ -160,24 +160,25 @@ gulp.task('browser-sync', function() {
 //------------------------------------------------------------------------------
 
 
-gulp.task('use-jade', function() {
+gulp.task('cleanup-php', function() {
   return gulp.src( ['./*.php','!./functions.php'] )
     .pipe(prompt.confirm({
-      message: 'Sure you want to use Jade? All php files will be deleted',
+      message: 'Sure you want to use Jade? All php files will be deleted before compiling',
       default: true
     }))
     .pipe(rimraf())
-    .pipe(notify({ message: 'Successfully changed mode. (Jade mode)', onLast: true}));
 });
 
-gulp.task('use-php', function() {
-  return gulp.src( gulpSettings.jadeFolder )
-    .pipe(prompt.confirm({
-      message: 'Sure you want to use PHP? Jade folder will be deleted',
-      default: true
+gulp.task('build-jade', function() {
+  return gulp.src( gulpSettings.jadePath )
+    .pipe(jade({
+      pretty: true
     }))
-    .pipe(rimraf())
-    .pipe(notify({ message: 'Successfully changed mode. (PHP mode)', onLast: true}));
+    .pipe(gulp.dest( gulpSettings.jadeDest ));
+});
+
+gulp.task('use-jade', function() {
+  runSequnce(['cleanup-php','build-jade'])
 });
 
 
@@ -247,6 +248,8 @@ gulp.task('clean-prod', function() {
 //FTP TASK
 //------------------------------------------------------------------------------
 
+//Get theme name
+var theme_name = getThemeName();
 
 var globals = [
     'source/**',
@@ -270,8 +273,8 @@ gulp.task('deploy-theme', function() {
   });
 
   return gulp.src( globals, { base: '.', buffer: false })
-    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
-    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
+    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(notify({ message: 'Successfully deployed theme to remote server.', onLast: true}));
 
@@ -288,8 +291,8 @@ gulp.task('ftp-upload', function() {
   });
 
   return gulp.src( globals, { base: '.', buffer: false })
-    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
-    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
+    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(notify({ message: 'Successfully uploaded file(s).', onLast: true}));
 
