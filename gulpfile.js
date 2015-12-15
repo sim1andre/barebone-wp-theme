@@ -136,12 +136,6 @@ var runSequnce = require('run-sequence');
 var createTaskArray = require('./gulptasks/custom/create-task');
 var getThemeName = require('./gulptasks/custom/get-theme-name');
 
-//Getting path and foldername of theme.
-//var theme_absolute_path = path.resolve(__dirname);
-var theme_name =  getThemeName();
-
-console.log(theme_name);
-
 
 //------------------------------------------------------------------------------
 //Browser Sync TASK
@@ -253,6 +247,7 @@ gulp.task('clean-prod', function() {
 //FTP TASK
 //------------------------------------------------------------------------------
 
+
 var globals = [
     'source/**',
     'public/**',
@@ -275,8 +270,8 @@ gulp.task('deploy-theme', function() {
   });
 
   return gulp.src( globals, { base: '.', buffer: false })
-    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
-    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
+    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(notify({ message: 'Successfully deployed theme to remote server.', onLast: true}));
 
@@ -293,8 +288,8 @@ gulp.task('ftp-upload', function() {
   });
 
   return gulp.src( globals, { base: '.', buffer: false })
-    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
-    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
+    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
+    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + getThemeName(); ) )
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(notify({ message: 'Successfully uploaded file(s).', onLast: true}));
 
