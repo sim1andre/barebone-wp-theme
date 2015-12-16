@@ -4,13 +4,34 @@
 //GULP Settings
 //------------------------------------------------------------------------------
 
+//Set to true if you are in a production environment.
+//True state will minify css and js.
+var production = false;
+
+//Set to true if you will use Browsersync.
+//Remember to configure Browsersync first.
+var useBrowserSync = false;
+
+//Use Jade Templates by setting this to true.
+var useJadeTemplate = false;
+
+//Set to true if you want to upload files to remote server on file change.
+var ftpAutoUpload = false;
+
+//Set to true if you want screen notifications. Else notifications will show
+//up in terminal.
+var desktopNotifications = true;
+
+var notifications = {
+  onNewImages:true,
+  onFileChange:true,
+  onNewFile:true,
+  onFtpUploud:true
+}
+
+
 
 var gulpSettings = {
-
-    development: true,
-    runBrowserSync: true,
-    useJade: false,
-    ftpAutoUpload: false,
 
   //Root--------------------------------------
 
@@ -82,12 +103,12 @@ var gulpSettings = {
 
 var gulpTasks = {
   'tasks': [
-    { 'name':'jade', 'run': gulpSettings.useJade },
-    { 'name':'browser-sync', 'run': gulpSettings.runBrowserSync },
-    { 'name':'ftp-upload', 'run': gulpSettings.ftpAutoUpload },
+    { 'name':'jade', 'run': useJadeTemplate , 'useInBS':true },
+    { 'name':'browser-sync', 'run': useBrowserSync },
+    { 'name':'ftp-upload', 'run': ftpAutoUpload , 'useInBS':true },
     { 'name':'sass', 'run':true },
-    { 'name':'js', 'run':true },
-    { 'name':'images', 'run':true },
+    { 'name':'js', 'run':true , 'useInBS':true  },
+    { 'name':'images', 'run':true , 'useInBS':true  },
     { 'name':'watch-dir', 'run':true }
   ]
 }
@@ -98,6 +119,8 @@ var gulpTasks = {
 //------------------------------------------------------------------------------
 
 var gulp  = require('gulp');
+var plugins = require('gulp-load-plugins')({ pattern: '*' });
+var argv = require('minimist');
 var browserSync = require('browser-sync');
 var jade = require('gulp-jade-php');
 var changed = require('gulp-changed');
@@ -120,6 +143,7 @@ var source = require('vinyl-source-stream');
 var babelify = require('babelify');
 var streamify = require('gulp-streamify');
 var uglify = require('gulp-uglify');
+var notifier = require('node-notifier');
 var notify = require('gulp-notify');
 var fs = require('fs');
 var imagemin = require('gulp-imagemin');
@@ -135,13 +159,14 @@ var runSequnce = require('run-sequence');
 //Custom modules
 var createTaskArray = require('./gulptasks/custom/create-task');
 var getThemeName = require('./gulptasks/custom/get-theme-name');
-
+var getIcon = path.resolve('gulptasks/icons/wordpress-logo.png');
+var themeName = getThemeName();
 
 //------------------------------------------------------------------------------
 //Browser Sync TASK
 //------------------------------------------------------------------------------
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', function() { //Works with gulp-load-plugins
 
   browserSync.init({
       proxy: {
@@ -156,14 +181,14 @@ gulp.task('browser-sync', function() {
 });
 
 //------------------------------------------------------------------------------
-// TEMPLATE TASK to use Jade or Php
+// Template task to use Jade
 //------------------------------------------------------------------------------
 
 
 gulp.task('cleanup-php', function() {
   return gulp.src( ['./*.php','!./functions.php'] )
     .pipe(prompt.confirm({
-      message: 'Sure you want to use Jade? All php files will be deleted before compiling',
+      message: 'Sure you want to use Jade? All php files will be deleted before compiling Jade',
       default: true
     }))
     .pipe(rimraf())
@@ -178,7 +203,14 @@ gulp.task('build-jade', function() {
 });
 
 gulp.task('use-jade', function() {
-  runSequnce(['cleanup-php','build-jade'])
+  runSequnce(['cleanup-php'], 'build-jade', function() {
+    if(desktopNotifications) {
+      notifier.notify({title: 'Now using Jade', icon: getIcon, message: 'Changed to Jade mode', sound: true});
+    }
+    else {
+      gutil.log(gutil.colors.magenta('Successfully changed to Jade mode'));
+    }
+  });
 });
 
 
@@ -192,12 +224,12 @@ gulp.task('sass-build', function() {
     extensions: ['.scss']
   }))
   .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-  .pipe(sass()).on('end', function(){ gutil.log(gutil.colors.magenta('Compiled sass'))})
+  .pipe(sass())
   .pipe(autoprefixer({
       browsers: ['last 2 versions','> 5%'],
       cascade: false
-  })).on('end', function(){ gutil.log(gutil.colors.magenta('Added browserprefixes to css'))})
-  .pipe(gulp.dest(gulpSettings.cssPath)).on('end', function(){ gutil.log(gutil.colors.magenta('Successfully runned sass build'))});
+  }))
+  .pipe(gulp.dest(gulpSettings.cssPath));
 });
 
 
@@ -208,48 +240,33 @@ gulp.task('sass-build', function() {
 gulp.task('js-build', function (){
   return browserify({entries: gulpSettings.srcJsPath, debug: true })
     .transform(babelify)
-    .bundle().on('end', function(){ gutil.log(gutil.colors.magenta('Bundled js and converted es6 into es5'))})
+    .bundle()
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(source('app.js'))
-    .pipe(gulp.dest( gulpSettings.publicJsPath )).on('end', function(){ gutil.log(gutil.colors.magenta('Successfully runned js build'))});
-});
+    .pipe(gulp.dest( gulpSettings.publicJsPath ));
+  });
 
 
 //------------------------------------------------------------------------------
 //Build task
 //------------------------------------------------------------------------------
 
-gulp.task('build', function() {
-  runSequnce(['sass-build', 'js-build'], consoleLogger);
+gulp.task('build', function () {
+  runSequnce(['sass-build'], 'js-build', function () {
+    if(desktopNotifications) {
+      notifier.notify({title: 'Build Task', icon: getIcon, message: 'Successfully built public folders', sound: true});
+    }
+    else {
+      gutil.log(gutil.colors.magenta('Successfully built public folders'));
+    }
+  });
 });
 
 
-var consoleLogger = function(msg) {
-  if(!msg) {
-    gutil.log(gutil.colors.magenta('Successfully builded public folders'));
-  }
-  else {
-    gutil.log(gutil.colors.magenta(msg));
-  }
-}
 
 //------------------------------------------------------------------------------
-//CLEANUP TASK
+//DEPLOY TASK
 //------------------------------------------------------------------------------
-
-gulp.task('clean-prod', function() {
-  return gulp.src(['./public/**/app.{css,js}', './**/.gitkeep'], {read: false})
-  .pipe(rimraf({ force: true }))
-  .pipe(notify({ message: 'Successfully cleaned up public folders. (Production mode)', onLast: true}));
-});
-
-
-//------------------------------------------------------------------------------
-//FTP TASK
-//------------------------------------------------------------------------------
-
-//Get theme name
-var theme_name = getThemeName();
 
 var globals = [
     'source/**',
@@ -262,6 +279,12 @@ var globals = [
     '*.md'
 ];
 
+gulp.task('clean-prod', function() {
+  return gulp.src(['./public/**/app.{css,js}', './**/.gitkeep'], {read: false})
+  .pipe(rimraf({ force: true }));
+});
+
+
 gulp.task('deploy-theme', function() {
 
   var connection = ftp.create({
@@ -273,14 +296,13 @@ gulp.task('deploy-theme', function() {
   });
 
   return gulp.src( globals, { base: '.', buffer: false })
-    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
-    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
-    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-    .pipe(notify({ message: 'Successfully deployed theme to remote server.', onLast: true}));
+    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + themeName ) )
+    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + themeName ) )
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}));
 
 });
 
-gulp.task('ftp-upload', function() {
+gulp.task('ftp-upload', function(cb) {
 
   var connection = ftp.create({
     host: gulpSettings.ftpHost,
@@ -290,13 +312,30 @@ gulp.task('ftp-upload', function() {
     log: gutil.error
   });
 
-  return gulp.src( globals, { base: '.', buffer: false })
-    .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
-    .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + theme_name ) )
-    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-    .pipe(notify({ message: 'Successfully uploaded file(s).', onLast: true}));
 
+  watch( globals , function(cb) {
+
+    return gulp.src( globals, { base: '.', buffer: false })
+      .pipe( connection.newer( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + themeName ) )
+      .pipe( connection.dest( gulpSettings.ftpRemoteFolder + '/wp-content/themes/' + themeName ) )
+      .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+      .pipe(gulpif(desktopNotifications && notifications.onFtpUpload, notify({'title':'FTP', icon: getIcon, 'message': 'File uploaded'})))
+  });
 });
+
+//Task for deploying theme. Running first a cleanup in public folders before upload
+//to remote server.
+gulp.task('deploy', function() {
+  runSequnce(['clean-prod'], 'deploy-theme', function () {
+    if(desktopNotifications) {
+      notifier.notify({title: 'FTP task', icon: getIcon, message: 'Successfully deployed theme'});
+    }
+    else {
+      gutil.log(gutil.colors.magenta('Successfully deployed theme'));
+    }
+  });
+});
+
 
 //------------------------------------------------------------------------------
 //WATCH AND RUN TASKS
@@ -326,8 +365,8 @@ gulp.task('js', function (cb){
       .bundle()
       .pipe(plumber())
       .pipe(source('app.js'))
-      .pipe(gulpif( !gulpSettings.development, streamify(uglify())))
-      .pipe(gulpif( !gulpSettings.development, rename({ suffix:'.min' })))
+      .pipe(gulpif( production , streamify(uglify())))
+      .pipe(gulpif( production , rename({ suffix:'.min' })))
       .pipe(gulp.dest( gulpSettings.publicJsPath ));
 
   });
@@ -348,10 +387,10 @@ gulp.task('sass', function (cb) {
               browsers: ['last 2 versions','> 5%'],
               cascade: false
           }))
-          .pipe(gulpif( !gulpSettings.development , cssmin()))
-          .pipe(gulpif( !gulpSettings.development, rename({ suffix:".min" })))
+          .pipe(gulpif( production , cssmin()))
+          .pipe(gulpif( production , rename({ suffix:".min" })))
           .pipe(gulp.dest(gulpSettings.cssPath))
-          .pipe(gulpif( gulpSettings.runBrowserSync ,  browserSync.stream()));
+          .pipe(gulpif( useBrowserSync ,  browserSync.stream()));
 
     });
 });
@@ -375,7 +414,7 @@ gulp.task('images', function(cb) {
       .pipe(imageminGifsicle({interlaced: true})())
       .pipe(imageminJpegtran({ progressive: true })())
       .pipe(gulp.dest( gulpSettings.publicImagePath ))
-      .pipe(notify({ 'title':'Image optimized','message': '<%= file.relative %>' }));
+      .pipe(gulpif( desktopNotifications , notify({'title':'Image minified', icon: getIcon, 'message': '<%= file.relative %>'})));
   });
 });
 
@@ -383,32 +422,42 @@ gulp.task('images', function(cb) {
 // Watching task for all files
 //---------------------------------------------------------------------------------------------------------
 
+var eventLogger = function(msg) {
+  gutil.log(gutil.colors.magenta(msg));
+}
+
 
 gulp.task('watch-dir', function () {
 
-  watch( ['!./source/images/**/**','./source/**/**'] , gulpif(gulpSettings.useJade, ['jade','sass','js'], ['sass','js'] )).on('add', function (file) {
+  watch( ['!./source/images/**/**','./source/**/**'] , gulpif( useJadeTemplate, ['jade','sass','js'], ['sass','js'] )).on('add', function (file) {
 
     var filepath = file;
     var filename = path.basename(filepath);
 
     return gulp.src( file, { read: false })
-    .pipe(plumber())
-    .pipe(notify({'title':'New file created','message': filename }));
+    .pipe(plumber()).on('end', function() {
+      if(!desktopNotifications && notifications.onNewFile) {
+        eventLogger('New file created/added: ' + filename)
+      }})
+    .pipe(gulpif(desktopNotifications && notifications.onNewFile, notify({title: 'New file created/added', icon: getIcon, message: filename})));
+
   });
 
   //---------------------------------------------------------------------------------------------------------
   // Watching all files on change (Exluding images on change)
   //---------------------------------------------------------------------------------------------------------
 
-  watch( ['!./source/images/**/**','./source/**/**'], gulpif(gulpSettings.useJade, ['jade','sass','js'], ['sass','js'] )).on('change', function (file) {
+  watch( ['!./source/images/**/**','./source/**/**'], gulpif( useJadeTemplate, ['jade','sass','js'], ['sass','js'] )).on('change', function (file) {
 
     var filepath = file;
     var filename = path.basename(filepath);
 
     return gulp.src( file, { read: false })
-    .pipe(plumber())
-    .pipe(notify({ 'title':'File changed','message': filename }));
-
+    .pipe(plumber()).on('end', function() {
+      if(!desktopNotifications && notifications.onFileChange) {
+        eventLogger('File changed: ' + filename)
+      }})
+    .pipe(gulpif(desktopNotifications && notifications.onFileChange, notify({title: 'File changed', icon: getIcon, message: filename})));
   });
 
 
@@ -422,8 +471,11 @@ gulp.task('watch-dir', function () {
       var filename = path.basename(filepath);
 
       return gulp.src( file, { read: false })
-      .pipe(plumber())
-      .pipe(notify({ 'title':'New image added','message': filename }));
+      .pipe(plumber()).on('end', function() {
+        if(!desktopNotifications && notifications.onNewImage) {
+          eventLogger('New image added: ' + filename)
+        }})
+      .pipe(gulpif(desktopNotifications && notifications.onNewImage, notify({title: 'New image added: ', icon: getIcon, message: filename})));
 
   });
 
@@ -432,7 +484,7 @@ gulp.task('watch-dir', function () {
   // Watching all files on change and reload browsers(Browsersync feature)
   //---------------------------------------------------------------------------------------------------------
 
-  watch( ['./source/**/**','./*.php'], gulpif(gulpSettings.useJade, ['jade','js','images'], ['js','images'])).on('change', browserSync.reload);
+  watch( ['./source/**/**','./*.php'], gulpif( useJadeTemplate , ['jade','js','images','ftp-upload'], ['js','images','ftp-upload']) ).on('change', browserSync.reload);
 
 });
 
@@ -466,8 +518,3 @@ gulp.task('foundation-js', function () {
 
 //Creating default run task
 gulp.task('default', function() { createTaskArray(gulpTasks); });
-
-
-//Task for deploying theme. Running first a cleanup in public folders before upload
-//to remote server.
-gulp.task('deploy', function() { runSequnce('clean-prod', ['deploy-theme']); });

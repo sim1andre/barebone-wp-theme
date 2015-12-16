@@ -2,11 +2,6 @@
 
 This is a barebone wp theme with advanced Gulp features.
 
-**Coming soon!**
-
-*No need to restart Gulp when making new files. Automatic injecting new files into watch stream.
-This will work for all filetypes.*
-
 **Features:**
 
 * Write Jade and compile into php.
@@ -17,6 +12,7 @@ This will work for all filetypes.*
 * Use Browsersync.
 * Deploy theme to remote server.
 * Upload changes automatically to remote server.
+* Inject new files into watch stream. No need to restart Gulp.
 
 <br/>
 <br/>
