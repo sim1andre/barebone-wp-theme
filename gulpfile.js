@@ -20,7 +20,7 @@ var ftpAutoUpload = false;
 
 //Set to true if you want screen notifications. Else notifications will show
 //up in terminal.
-var desktopNotifications = true;
+var desktopNotifications = false;
 
 var notifications = {
   onNewImages:true,
@@ -28,8 +28,6 @@ var notifications = {
   onNewFile:true,
   onFtpUploud:true
 }
-
-
 
 var gulpSettings = {
 
@@ -391,8 +389,8 @@ gulp.task('sass', function (cb) {
           .pipe(gulpif( production , rename({ suffix:".min" })))
           .pipe(gulp.dest(gulpSettings.cssPath))
           .pipe(gulpif( useBrowserSync ,  browserSync.stream()));
-
     });
+
 });
 
 
